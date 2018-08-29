@@ -1,12 +1,14 @@
+# -*- coding: utf-8 -*-
 import os , datetime , psutil , time , subprocess
 import socket
 import MySQLdb
 import logging
+
 #Connect to database
 try:
-    db = MySQLdb.connect(host=" lb " , user=" lb " , passwd=" lb " , db="MONITOR")
-except Exception , e:
-    print 1, repr(e)
+    db = MySQLdb.connect(host="localhost" , user="root" , passwd="root" , db="MONITOR")
+except Exception as e:
+    print(1, repr(e))
 
 # GLOBAL VARIABLES
 excludeUser = ['root', 'avahi', 'dbus', 'polkitd', 'rpc', 'rpcuser ' , 'postfix ']
@@ -115,7 +117,7 @@ def getCompleteDict(processDict , processList):
             try:
                 pinfo = proc.as_dict(attrs=['ppid', 'pid', 'name'])
             except psutil.NoSuchProcess:
-                print ' Fail : ', pinfo
+                print (' Fail : ', pinfo)
                 pass
             else:
                 if key == pinfo['ppid']:
@@ -166,7 +168,7 @@ def calculateResources ( processDict ) :
 #@profile
 def getProcData(proc):
     try:
-        timestamp = datetime.datetime.fromtimestamp(proc.create_time()).strftime("%Y−%m−%d %H:%M:%S")
+        timestamp = datetime.fromtimestamp(proc.create_time()).strftime('%Y−%m−%d %H:%M:%S')
         real, effective, saved = proc.uids()
         username = proc.username()
         name = proc.name()
@@ -187,8 +189,8 @@ def getProcResources(proc, pid):
         sumRAMvms = vms
         sumReadIO = rIO
         sumWriteIO = wIO
-    except Exception, e:
-        print 12, repr(e)
+    except Exception as e:
+        print (12, repr(e))
     return sumCPU, sumRAM, sumRAMrss, sumRAMvms, sumReadIO, sumWriteIO
 
 #@profile
@@ -214,8 +216,8 @@ def getChildData(childrenList):
                 sumRAMvms += vms
                 sumReadIO += rIO
                 sumWriteIO += wIO
-            except Exception, e:
-                print 12, repr(e)
+            except Exception as e:
+                print (12, repr(e))
 
     return sumCPU, sumRAM, sumRAMrss, sumRAMvms, sumReadIO, sumWriteIO
 
@@ -232,53 +234,53 @@ def cleanupStoreTime(pDict):
 def addServer(hostname):
     try:
         server = cursor.execute( "SELECT NAME FROM SERVER WHERE NAME=%s", hostname)
-    except Exception, e:
-        print 10, repr(e)
+    except Exception as e:
+        print (10, repr(e))
 
     if server == 0:
         try:
             cursor.execute("INSERT INTO SERVER (NAME) VALUES (%s)", hostname)
-        except Exception, e:
-            print 11, repr(e)
+        except Exception as e:
+            print (11, repr(e))
 
 #@profile
 def addUser(real, username):
     try:
         user = cursor.execute("SELECT UID FROM USER WHERE UID = %s AND NAME=%s", (real, username))
-    except Exception, e:
-        print 2, repr(e)
+    except Exception as e:
+        print (2, repr(e))
 
     if user == 0:
         try:
             cursor.execute("INSERT INTO USER (UID, NAME, SERVER) VALUES (%s,%s,%s)", (real, username, hostname))
-        except Exception, e:
-            print 3, repr(e)
+        except Exception as e:
+            print (3, repr(e))
     else:
         try:
             cursor.execute("UPDATE USER SET SERVER = % s WHERE UID=%s AND NAME=%s", (hostname, real, username))
-        except Exception, e:
-            print 4, repr(e)
+        except Exception as e:
+            print (4, repr(e))
 
 #@profile
 def addJob(pid, real, timestamp, name, cmd):
     try:
         isRunning = cursor.execute("SELECT PID FROM JOB WHERE UID=%s AND PID=%s AND START_TIME=%s", (real, pid, timestamp))
-    except Exception, e:
-        print 5, repr(e)
+    except Exception as e:
+        print (5, repr(e))
     if isRunning == 0:
         try:
             cursor.execute("INSERT INTO JOB (PID, UID, START_TIME, CMD_NAME, COMMAND, SERVER) VALUES (%s,%s,%s,%s,%s,%s)", (pid, real, timestamp, name, cmd, hostname))
-        except Exception, e:
-            print 6, repr(e)
+        except Exception as e:
+            print (6, repr(e))
 
 #@profile
 def addSample(pid, real, timestamp, CPU, RAM, rss, vms, ReadIO, WriteIO):
     try:
         cursor.execute("INSERT INTO jSAMPLE (PID , UID, START_TIME, CPU, RAM, RAM_RSS, RAM_VMS, DISK_IN, DISK_OUT) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)", (pid, real, timestamp, CPU, RAM, rss, vms, ReadIO, WriteIO))
-    except Exception, e:
-        print 7, repr(e)
+    except Exception as e:
+        print (7, repr(e))
 
-logging.basicConfig(level=logging.DEBUG, filename= '/etc/lbmonitor/process.log')
+logging.basicConfig(level=logging.DEBUG, filename= './lbmonitor/process.log')
 if __name__ == ' __main__ ':
     # count = 0
     while(True):
