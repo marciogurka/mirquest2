@@ -42,7 +42,7 @@ class UploadFileStep extends Component {
 
   onDrop(files) {
     this.setState({files});
-    // this.props.updateFiles(files);
+    this.props.onChooseFiles(this.state.files);
   }
 }
 

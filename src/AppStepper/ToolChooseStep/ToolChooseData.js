@@ -60,3 +60,7 @@ export let predictionTools = [
     selected: false
   }
 ];
+
+export const getSelectedTools = (tools) => {
+  return tools.filter(tool => tool.selected === true);
+}

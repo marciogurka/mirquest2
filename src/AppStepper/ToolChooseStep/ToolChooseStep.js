@@ -7,7 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 import './ToolChooseStep.css';
 import { toolChooseStepStyles } from './ToolChooseStep.style';
 
-import { predictionTools } from './ToolChooseData';
+import { predictionTools, getSelectedTools } from './ToolChooseData';
 
 
 class ToolChooseStep extends Component {
@@ -22,10 +22,10 @@ class ToolChooseStep extends Component {
     let newTool = this.state.predictionTools.find(predTool => predTool.id === tool.id);
 
     if (tool) {
-      newTool.selected = !newTool.selected
+      newTool.selected = !newTool.selected;
+      this.setState({predictionTools});
+      this.props.onUpdateTools(getSelectedTools(this.state.predictionTools));
     }
-
-    this.setState({predictionTools})
   }
 
   render() {
@@ -53,8 +53,7 @@ class ToolChooseStep extends Component {
 
 ToolChooseStep.propTypes = {
   classes: PropTypes.object.isRequired,
-  files: PropTypes.array,
-  updateFiles: PropTypes.func,
+  onUpdateTools: PropTypes.func,
 };
 
 export default withStyles(toolChooseStepStyles)(ToolChooseStep);
