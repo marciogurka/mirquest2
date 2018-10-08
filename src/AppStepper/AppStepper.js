@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component }  from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography';
 
 import UploadFileStep from './UploadFileStep/UploadFileStep';
 import ToolChooseStep from './ToolChooseStep/ToolChooseStep';
+import ConfirmStep from './ConfirmStep/ConfirmStep';
 
 const styles = theme => ({
   root: {
@@ -27,24 +28,35 @@ function getSteps() {
   return ['Select FASTA files', 'Select Prediction\'s tools', 'Confirm the request'];
 }
 
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return <UploadFileStep/>;
-    case 1:
-      return <ToolChooseStep/>;
-    case 2:
-      return 'confirm the info';
-    default:
-      return 'Unknown step';
-  }
-}
+class AppStepper extends Component {
 
-class AppStepper extends React.Component {
-  state = {
-    activeStep: 0,
-    skipped: new Set(),
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      activeStep: 0,
+      files: [],
+      selectedTools: [],
+      skipped: new Set(),
+    };
+  }
+
+  getStepContent = (step) => {
+    switch (step) {
+      case 0:
+        return <UploadFileStep onChooseFiles={(files) => this.handleUpdateProperty('files', files)}/>;
+      case 1:
+        return <ToolChooseStep onUpdateTools={(selectedTools) => this.handleUpdateProperty('selectedTools', selectedTools)}/>;
+      case 2:
+        return <ConfirmStep selectedTools={this.state.selectedTools} files={this.state.files}/>;
+      default:
+        return 'Unknown step';
+    }
+  }
+
+  handleUpdateProperty(propName, newValue) {
+    this.setState({[propName]: newValue})
+  }
 
   isStepOptional = step => {
     return step === 1;
@@ -100,7 +112,7 @@ class AppStepper extends React.Component {
   render() {
     const { classes } = this.props;
     const steps = getSteps();
-    const { activeStep } = this.state;
+    const { activeStep, files, selectedTools } = this.state;
 
     return (
       <div className={classes.root}>
@@ -130,7 +142,7 @@ class AppStepper extends React.Component {
             </div>
           ) : (
             <div>
-              <div className={classes.instructions}>{getStepContent(activeStep)}</div>
+              <div className={classes.instructions}>{this.getStepContent(activeStep)}</div>
               <div>
                 <Button
                   disabled={activeStep === 0}
