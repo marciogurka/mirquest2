@@ -11,16 +11,13 @@ import { uploadFileStepStyles } from './UploadFileStep.style';
 class UploadFileStep extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      files: []
-    }
   }
 
   render() {
     const { classes } = this.props;
     return (
       <div className="start-page">
-        <Typography variant="body1" gutterBottom component="span"> Please choose your FASTA files to be analyzed</Typography>
+        <Typography variant="h5" gutterBottom> Please choose your FASTA files to be analyzed </Typography>
         <div>
           <div className="dropzone">
             <Dropzone onDrop={this.onDrop.bind(this)} className={classes.dropzone} accept=".fa">
@@ -29,11 +26,15 @@ class UploadFileStep extends Component {
           </div>
           <aside>
             <h2>Dropped files</h2>
-            <ul>
-              {
-                this.state.files.map(f => <li>{f.name} - {f.size} bytes</li>)
-              }
-            </ul>
+            {
+              (this.props.files.length > 0) ?
+                (<ul>
+                  { this.props.files.map((f, index) => <li key={index}>{f.name} - {f.size} bytes</li>) }
+                 </ul>)
+              :
+               <span>No files were selected yet.</span>
+            }
+            
           </aside>
         </div>
       </div>
@@ -41,8 +42,7 @@ class UploadFileStep extends Component {
   }
 
   onDrop(files) {
-    this.setState({files});
-    this.props.onChooseFiles(this.state.files);
+    this.props.onChooseFiles(files);
   }
 }
 

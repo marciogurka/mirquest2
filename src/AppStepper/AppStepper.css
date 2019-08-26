@@ -1,0 +1,19 @@
+.sweet-loading {
+    align-items: center;
+    background: #ffffffbd;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+    position: absolute;
+    width: 100%;
+    z-index: 1000;
+}
+
+.hide {
+    display: none;
+}
+
+.sweet-loading > h5 {
+    margin-top: 20px;
+}

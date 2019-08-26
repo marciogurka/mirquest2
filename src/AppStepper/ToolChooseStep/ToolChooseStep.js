@@ -32,12 +32,13 @@ class ToolChooseStep extends Component {
     const { classes } = this.props;
     return (
       <div className="tool-choose-step">
-        <Typography variant="body1" gutterBottom component="span"> Please choose your FASTA files to be analyzed</Typography>
+        <Typography variant="h5" gutterBottom> Please choose the tools to process your data</Typography>
         <div className={classes.toolList}>
           {
             predictionTools.map((tool, index) => {
               return <Button variant="contained"
                 key={index}
+                disabled={tool.disabled}
                 color={this.state.predictionTools[index].selected ? 'primary' : null}
                 onClick={() => this.changeSelectProp(tool)}
                 className={ classes.toolOption }>
