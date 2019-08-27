@@ -9,5 +9,8 @@ export const toolChooseStepStyles = theme => ({
   toolOption: {
     width: '30%',
     marginBottom: 15,
+  },
+  stepTitle: {
+    margin: "0 0 20px 0"
   }
 });

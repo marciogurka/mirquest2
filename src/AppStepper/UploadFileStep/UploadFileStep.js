@@ -4,20 +4,22 @@ import Dropzone from 'react-dropzone';
 
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Avatar from '@material-ui/core/Avatar';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
+
 import './UploadFileStep.css';
 import { uploadFileStepStyles } from './UploadFileStep.style';
 
 
 class UploadFileStep extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const { classes } = this.props;
     return (
       <div className="start-page">
-        <Typography variant="h5" gutterBottom> Please choose your FASTA files to be analyzed </Typography>
+        <Typography variant="h5" gutterBottom align="center" className={classes.stepTitle}> Please choose your FASTA files to be analyzed </Typography>
         <div>
           <div className="dropzone">
             <Dropzone onDrop={this.onDrop.bind(this)} className={classes.dropzone} accept=".fa">
@@ -28,9 +30,20 @@ class UploadFileStep extends Component {
             <h2>Dropped files</h2>
             {
               (this.props.files.length > 0) ?
-                (<ul>
-                  { this.props.files.map((f, index) => <li key={index}>{f.name} - {f.size} bytes</li>) }
-                 </ul>)
+                (<List>
+                  { 
+                    this.props.files.map((f, index) =>
+                      <ListItem key={index}>
+                        <Avatar>
+                          <FileCopyIcon />
+                        </Avatar>
+                        <ListItemText
+                          primary={f.name}
+                          secondary={`${f.size} bytes`}
+                        />
+                      </ListItem>)
+                  }
+                 </List>)
               :
                <span>No files were selected yet.</span>
             }

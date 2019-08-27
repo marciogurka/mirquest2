@@ -55,7 +55,7 @@ export let predictionTools = [
   },
   {
     name: "Mirinho",
-    id: "mirinho",
+    id: 1,
     selected: false,
     disabled: false
   },
@@ -67,9 +67,9 @@ export let predictionTools = [
   },
   {
     name: "miRBoost",
-    id: "mirboost",
+    id: 2,
     selected: false,
-    disabled: true
+    disabled: false
   },
   {
     name: "miREval",

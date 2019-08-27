@@ -13,7 +13,6 @@ import ConfirmStep from './ConfirmStep/ConfirmStep';
 import { appStepperStyle } from './AppStepper.style';
 import './AppStepper.css';
 
-import axios from 'axios';
 import { css } from '@emotion/core';
 import RingLoader from 'react-spinners/RingLoader';
 
@@ -37,7 +36,7 @@ class AppStepper extends Component {
       selectedTools: [],
       skipped: new Set(),
       loading: false,
-      loadingMessage: "Do not close this window, processing your request..."
+      loadingMessage: "Loading..."
     };
   }
 
@@ -48,7 +47,7 @@ class AppStepper extends Component {
       case 1:
         return <ToolChooseStep onUpdateTools={(selectedTools) => this.handleUpdateProperty('selectedTools', selectedTools)}/>;
       case 2:
-        return <ConfirmStep selectedTools={this.state.selectedTools} files={this.state.files}/>;
+        return <ConfirmStep selectedTools={this.state.selectedTools} files={this.state.files} showLoading={this.showLoading} hideLoading={this.hideLoading}/>;
       default:
         return 'Unknown step';
     }
@@ -63,57 +62,16 @@ class AppStepper extends Component {
   };
 
   handleNext = () => {
-    const { activeStep, files, selectedTools } = this.state;
-    const steps = getSteps();
+    const { activeStep } = this.state;
     let { skipped } = this.state;
     if (this.isStepSkipped(activeStep)) {
       skipped = new Set(skipped.values());
       skipped.delete(activeStep);
     }
-    // if is the last page, send the request
-    if (activeStep === steps.length - 1) {
-      this.setState({
-        loading: true
-      });
-      console.log(selectedTools)
-      const request_info = {
-        userName: "marcio",
-        userEmail: "marcio@gmail.com",
-        tools: [1],
-        file: files[0]
-      }
-      const form = new FormData();
-      form.append('userName', 'marcio');
-      form.append('userEmail', 'marcio@gmail.com');
-      form.append('tools', [1]);
-
-      if (files[0]) {
-        form.append('file', files[0]);
-      }
-      axios.post(`http://localhost:8000/api/request_records/`, form)
-        .then(res => {
-          this.setState({
-            loading: false
-          });
-          console.log(res)
-          // const persons = res.data;
-          // this.setState({
-          //   persons
-          // });
-        })
-        .catch(function (error) {
-          this.setState({
-            loading: false
-          });
-          console.error(error);
-        });
-    } else {
-      this.setState({
-        activeStep: activeStep + 1,
-        skipped,
-      });
-    }
-    
+    this.setState({
+      activeStep: activeStep + 1,
+      skipped,
+    });
   };
 
   handleBack = () => {
@@ -139,6 +97,19 @@ class AppStepper extends Component {
       };
     });
   };
+
+  showLoading = (messageText) => {
+    this.setState({
+      loading: true,
+      loadingMessage: messageText ? messageText : "Loading..."
+    });
+  }
+
+  hideLoading = () => {
+    this.setState({
+      loading: false
+    });
+  }
 
   handleReset = () => {
     this.setState({
@@ -173,22 +144,22 @@ class AppStepper extends Component {
   render() {
     const { classes } = this.props;
     const steps = getSteps();
-    const { activeStep, files, selectedTools } = this.state;
+    const { activeStep } = this.state;
 
     return (
       <div className={classes.root}>
-      < div className = { `sweet-loading ${ !this.state.loading ? "hide" : ""}` } >
-        < RingLoader
-          css={override}
-          sizeUnit={"px"}
-          size={150}
-          color={'#123abc'}
-          loading={this.state.loading}
-          gutterBottom
-        />
-        <Typography variant="h5" gutterBottom> {this.state.loadingMessage} </Typography>
-      </div> 
-        <Stepper activeStep={activeStep}>
+        <div className = { `sweet-loading ${ !this.state.loading ? "hide" : ""}` } >
+          < RingLoader
+            css={override}
+            sizeUnit={"px"}
+            size={150}
+            color={'#123abc'}
+            loading={this.state.loading}
+            gutterBottom
+          />
+          <Typography variant="h5" gutterBottom> {this.state.loadingMessage} </Typography>
+        </div> 
+        <Stepper activeStep={activeStep} className={classes.stepper}>
           {steps.map((label, index) => {
             const props = {};
             const labelProps = {};
@@ -223,15 +194,20 @@ class AppStepper extends Component {
                 >
                   Back
                 </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  disabled={this.checkNextButtonDisabled()}
-                  onClick={this.handleNext}
-                  className={classes.button}
-                >
-                  {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                </Button>
+                {
+                  (activeStep !== steps.length - 1) ?
+                    (<Button variant="contained"
+                      color="primary"
+                      disabled={this.checkNextButtonDisabled()}
+                      onClick={this.handleNext}
+                      className={classes.button}
+                    >
+                      Next
+                    </Button>)
+                    :
+                    null
+                }
+                
               </div>
             </div>
           )}

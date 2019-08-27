@@ -1,7 +1,10 @@
 export const appStepperStyle = theme => ({
     root: {
-        width: '90%',
-        position: 'relative'
+        position: 'relative',
+        background: 'transparent'
+    },
+    stepper: {
+        background: 'transparent'
     },
     button: {
        marginRight: theme.spacing.unit,
