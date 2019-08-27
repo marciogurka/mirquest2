@@ -10,14 +10,11 @@ import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-import Badge from '@material-ui/core/Badge';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems } from './MenuList';
 import { styles } from './App.style';
 
-import StartPage from './StartPage/StartPage';
 import AppStepper from './AppStepper/AppStepper';
 
 class App extends React.Component {
