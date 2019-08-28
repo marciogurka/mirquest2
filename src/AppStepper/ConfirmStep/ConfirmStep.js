@@ -16,6 +16,7 @@ import { confirmStepStyles } from './ConfirmStep.style';
 
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 class ConfirmStep extends Component {
   constructor(props) {
@@ -75,6 +76,9 @@ class ConfirmStep extends Component {
               });
               hideLoading();
               console.error(error);
+              toast.error("Ops! Something went wrong, please try again later!", {
+                position: toast.POSITION.BOTTOM_RIGHT
+              });
             });
         })
         .catch((error) => {
@@ -83,10 +87,17 @@ class ConfirmStep extends Component {
           });
           hideLoading();
           console.error(error);
+          toast.error("Ops! Something went wrong, please try again later!", {
+            position: toast.POSITION.BOTTOM_RIGHT
+          });
         });
     } else {
       console.error("Something is missing at your request, please try again");
+      toast.warn("Something is missing at your request, please try again", {
+        position: toast.POSITION.BOTTOM_RIGHT
+      });
     }
+    
   }
 
   render() {

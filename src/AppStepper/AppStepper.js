@@ -15,6 +15,8 @@ import './AppStepper.css';
 
 import { css } from '@emotion/core';
 import RingLoader from 'react-spinners/RingLoader';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const override = css`
     display: block;
@@ -24,6 +26,8 @@ const override = css`
 function getSteps() {
   return ['Select FASTA files', 'Select Prediction\'s tools', 'Confirm the request'];
 }
+
+toast.configure();
 
 class AppStepper extends Component {
 
