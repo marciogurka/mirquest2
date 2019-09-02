@@ -8,14 +8,18 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
+import Avatar from '@material-ui/core/Avatar';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import { mainListItems } from './MenuList';
 import { styles } from './App.style';
 
 import AppStepper from './AppStepper/AppStepper';
+import StartPage from './StartPage/StartPage';
+
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 class App extends React.Component {
 
@@ -40,24 +44,26 @@ class App extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, theme } = this.props;
+    const { open } = this.state;
 
     return (
       <React.Fragment>
+      <Router>  
         <CssBaseline />
         <div className={classes.root}>
           <AppBar
             position="absolute"
-            className={classNames(classes.appBar, this.state.open && classes.appBarShift)}
+            className={classNames(classes.appBar, open && classes.appBarShift)}
           >
-            <Toolbar disableGutters={!this.state.open} className={classes.toolbar}>
+            <Toolbar disableGutters={!open} className={classes.toolbar}>
               <IconButton
                 color="inherit"
                 aria-label="Open drawer"
                 onClick={this.handleDrawerOpen}
                 className={classNames(
                   classes.menuButton,
-                  this.state.open && classes.menuButtonHidden,
+                  open && classes.menuButtonHidden,
                 )}
               >
                 <MenuIcon />
@@ -74,26 +80,33 @@ class App extends React.Component {
             </Toolbar>
           </AppBar>
           <Drawer
-            variant="permanent"
-            classes={{
-              paper: classNames(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),
-            }}
-            open={this.state.open}
-          >
-            <div className={classes.toolbarIcon}>
-              <IconButton onClick={this.handleDrawerClose}>
-                <ChevronLeftIcon />
-              </IconButton>
-            </div>
-            <Divider />
-            <List>{mainListItems}</List>
-          </Drawer>
+          className={classes.drawer}
+          variant="persistent"
+          anchor="left"
+          open={open}
+          classes={{
+            paper: classes.drawerPaper,
+          }}
+        >
+          <div className={classes.drawerHeader}>
+            <Avatar alt="miRQuest 2" src="/logo.png" className={classes.bigAvatar} />
+            <IconButton onClick={this.handleDrawerClose}>
+              {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+            </IconButton>
+          </div>
+          <List>
+            {
+              mainListItems
+            }
+          </List>
+        </Drawer>
           <main className={classes.content}>
             <div className={classes.appBarSpacer} />
-            {/* <StartPage files={this.state.files} updateFiles={(files) => this.updateFiles(files)}/> */}
-            <AppStepper/>
+            <Route path="/" exact component={StartPage} />
+            <Route path="/process/" component={AppStepper} />
           </main>
         </div>
+        </Router>
       </React.Fragment>
     );
   }
@@ -103,4 +116,4 @@ App.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(App);
+export default withStyles(styles, { withTheme: true })(App);
