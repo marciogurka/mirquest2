@@ -13,6 +13,7 @@ import TimelineIcon from '@material-ui/icons/Timeline';
 
 import './ConfirmStep.css';
 import { confirmStepStyles } from './ConfirmStep.style';
+import { SuccessDialog } from '../../SuccessDialog/SuccessDialog';
 
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import axios from 'axios';
@@ -24,8 +25,22 @@ class ConfirmStep extends Component {
     this.state = {
       userEmail: "",
       userName: "",
-      loading: false
+      loading: false,
+      openSuccessDialog: false,
+      requestRecord: null
     };
+  }
+
+  closeSuccessDialog = () => {
+    this.setState({
+      openSuccessDialog: false
+    })
+  }
+
+  handleFormNotValid = (errors) => {
+    toast.warning("Please fill the form with valid information!", {
+      position: toast.POSITION.BOTTOM_RIGHT
+    });
   }
 
   handleSubmit = () => {
@@ -63,12 +78,14 @@ class ConfirmStep extends Component {
           const form = new FormData();
           form.append('file', files[0]);
           axios.patch(`http://localhost:8000/api/request_records/${response.data.pk}/`, form)
-            .then(request => {
+            .then(response => {
               this.setState({
-                loading: false
+                loading: false,
+                requestRecord: response.data,
+                openSuccessDialog: true
               });
               hideLoading();
-              return request;
+              return response;
             })
             .catch(error => {
               this.setState({
@@ -102,7 +119,7 @@ class ConfirmStep extends Component {
 
   render() {
     const { classes } = this.props;
-    const { userEmail, userName, loading } = this.state;
+    const { userEmail, userName, loading, openSuccessDialog, requestRecord } = this.state;
     const handleChange = name => event => {
       this.setState({
         [name]: event.target.value
@@ -110,11 +127,12 @@ class ConfirmStep extends Component {
     };
     return (
       <div className="tool-choose-step">
+        <SuccessDialog openSuccessDialog={openSuccessDialog} closeCallback={this.closeSuccessDialog} requestRecord={requestRecord}></SuccessDialog>
         <Typography variant="h5" gutterBottom align="center" className={classes.stepTitle}> Please confirm your request </Typography>
         <Grid container spacing={16}>
           <Grid item xs={12} sm={4} className={classes.fullHeight}>
             <Paper className={`${classes.paper} ${classes.fullHeight}`}>
-              <Typography variant="h6" gutterBottom className={classes.infoTitle}> You choose this tools </Typography>
+              <Typography variant="subtitle2" gutterBottom className={classes.infoTitle}> You choose this tools </Typography>
               <List className={classes.root} subheader={<li />}>
                 {this.props.selectedTools.map((tool, index) => (
                   <ListItem key={`tool-${index}`} dense={true}>
@@ -122,7 +140,7 @@ class ConfirmStep extends Component {
                   </ListItem>
                 ))}
               </List>
-              <Typography variant="h6" gutterBottom className={classes.infoTitle}> You choose this files to be analyzed </Typography>
+              <Typography variant="subtitle2" gutterBottom className={classes.infoTitle}> You choose this files to be analyzed </Typography>
               <List className={classes.root} subheader={<li />}>
                 {this.props.files.map((file, index) => (
                   <ListItem key={`file-${index}`} dense={true}>
@@ -134,8 +152,8 @@ class ConfirmStep extends Component {
           </Grid>
           <Grid item xs={12} sm={8}>
             <Paper className={classes.paper}>
-              <Typography variant="h6" gutterBottom className={classes.infoTitle}> Please provide your info to receive the notification when the processing is finished</Typography>
-              <ValidatorForm className={`${classes.container} ${classes.userForm}`} ref="form" onSubmit={this.handleSubmit} onError={errors => console.log(errors)}>
+              <Typography variant="subtitle1" gutterBottom className={classes.infoTitle}> Please provide your info to receive the notification when the processing is finished</Typography>
+              <ValidatorForm className={`${classes.container} ${classes.userForm}`} ref="form" onSubmit={this.handleSubmit} onError={errors => this.handleFormNotValid(errors)}>
                 <TextValidator
                       label = "Name"
                       onChange={handleChange('userName')}

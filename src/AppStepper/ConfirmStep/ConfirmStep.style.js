@@ -1,7 +1,9 @@
 export const confirmStepStyles = theme => ({
   infoTitle: {
     textAlign: 'center',
-    paddingTop: 10
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingTop: 10,
   },
   fullHeight: {
     height: '100%'
