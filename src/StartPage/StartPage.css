@@ -1,0 +1,16 @@
+.button-home-page {
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+
+.button-home-page > span {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    font-size: 1.5em;
+}
+
+.button-home-page > span > svg {
+    font-size: 5em;
+}
