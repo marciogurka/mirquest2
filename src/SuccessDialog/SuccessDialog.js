@@ -14,6 +14,8 @@ import Slide from '@material-ui/core/Slide';
 import './SuccessDialog.css';
 import { successDialogStyles } from './SuccessDialog.style';
 
+import { Link } from "react-router-dom";
+
 function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
@@ -50,7 +52,7 @@ export class SuccessDialog extends Component {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={closeCallback} color="primary">
+            <Button onClick={closeCallback} color="primary" component={Link} to="/">
               Close
             </Button>
           </DialogActions>
