@@ -21,7 +21,7 @@ class StartPage extends Component {
     return (
         <Grid container spacing={16} className={classes.root}>
           <Grid item xs={12}>
-            <Typography variant="display1" gutterBottom> Welcome to miRQuest 2</Typography>
+            <Typography variant="title" align="center" gutterBottom> Welcome to miRQuest 2</Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Paper className={classes.paperContainer}>
@@ -41,10 +41,6 @@ class StartPage extends Component {
           </Grid>
         </Grid>
     );
-  }
-
-  onDrop(files) {
-    this.props.updateFiles(files);
   }
 }
 
