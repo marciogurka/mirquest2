@@ -22,7 +22,7 @@ export const mainListItems = (
         </ListItemIcon>
         <ListItemText primary="Process File" />
     </ListItem>
-    <ListItem button>
+    <ListItem button component={Link} to="/report/">
       <ListItemIcon>
         <BarChartIcon />
       </ListItemIcon>

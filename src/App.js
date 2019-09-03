@@ -18,6 +18,7 @@ import { styles } from './App.style';
 
 import AppStepper from './AppStepper/AppStepper';
 import StartPage from './StartPage/StartPage';
+import ReportPage from './ReportPage/ReportPage';
 
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
@@ -104,6 +105,7 @@ class App extends React.Component {
             <div className={classes.appBarSpacer} />
             <Route path="/" exact component={StartPage} />
             <Route path="/process/" component={AppStepper} />
+            <Route path="/report/" component={ReportPage} />
           </main>
         </div>
         </Router>
