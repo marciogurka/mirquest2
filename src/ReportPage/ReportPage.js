@@ -17,6 +17,8 @@ import BookmarkIcon from '@material-ui/icons/Bookmark';
 import './ReportPage.css';
 import { reportPageStyles } from './ReportPage.style';
 
+import RequestInfoDialog from './RequestInfoDialog/RequestInfoDialog';
+
 import { css } from '@emotion/core';
 import RingLoader from 'react-spinners/RingLoader';
 import { toast } from 'react-toastify';
@@ -35,12 +37,14 @@ class ReportPage extends Component {
       search: "",
       results: [],
       searching: false,
+      openRequestInfoDialog: false,
+      selectedRecord: {}
     }
   }
 
   handleSearch = (ev) => {
-    if(ev.key === "Enter" || ev.key === "enter") {
-      const { search } = this.state;
+    const { search, results } = this.state;
+    if(ev.key === "Enter" || ev.key === "enter" || !ev.key) {
       if (search) {
         this.setState({
           results: [],
@@ -73,14 +77,41 @@ class ReportPage extends Component {
           position: toast.POSITION.BOTTOM_RIGHT
         });
       }
+    } else if (results.length) {
+      this.setState({
+        results: []
+      });
+    }
+  }
+
+  closeRequestInfoDialog = () => {
+    this.setState({
+      openRequestInfoDialog: false,
+      selectedRecord: null,
+    })
+  }
+
+  openRequestDetails = (index) => {
+    const { results } = this.state;
+    if (results[index] && results[index].status.toLowerCase().localeCompare("processed") === 0) {
+      this.setState({
+        openRequestInfoDialog: true,
+        selectedRecord: results[index],
+      })
+    } else if (results[index] && results[index].status.toLowerCase().localeCompare("processing") === 0) {
+      toast.info("This request is still processing!", {
+        position: toast.POSITION.BOTTOM_RIGHT
+      });
     } else {
-      return;
+      toast.error("Ops! Something went wrong, please try again later!", {
+        position: toast.POSITION.BOTTOM_RIGHT
+      });
     }
   }
 
   render() {
     const { classes } = this.props;
-    const { results, search, searching } = this.state;
+    const { results, search, searching, selectedRecord, openRequestInfoDialog } = this.state;
     const handleChange = name => event => {
       this.setState({
         [name]: event.target.value
@@ -88,6 +119,7 @@ class ReportPage extends Component {
     };
     return (
         <Grid container spacing={16} className={classes.root}>
+          <RequestInfoDialog openRequestInfoDialog={openRequestInfoDialog} closeCallback={this.closeRequestInfoDialog} requestRecord={selectedRecord}></RequestInfoDialog>
           <Grid item xs={12} className={classes.bodyList}>
             <Typography variant="title" gutterBottom align="center"> Report search </Typography>
             <TextField
@@ -120,10 +152,10 @@ class ReportPage extends Component {
               (!searching && results.length > 0) ? 
                 (
                   <List className={classes.list}>
-                    <ListSubheader>Results for search: </ListSubheader>
+                    <ListSubheader>Results for search "{ search }": </ListSubheader>
                     {
                       results.map((item, index) => {
-                          return (<ListItem alignItems="flex-start" button key={index}>
+                          return (<ListItem alignItems="flex-start" button key={index} onClick={ev => this.openRequestDetails(index)}>
                             <ListItemIcon>
                               <BookmarkIcon />
                             </ListItemIcon>
