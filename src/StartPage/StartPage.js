@@ -23,21 +23,24 @@ class StartPage extends Component {
           <Grid item xs={12}>
             <Typography variant="title" align="center" gutterBottom> Welcome to miRQuest 2</Typography>
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <Paper className={classes.paperContainer}>
-              <Button className="button-home-page" component={Link} to="/process">
-                <TimelineIcon />
-                Process your data
-              </Button>
-            </Paper>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Paper className={classes.paperContainer}>
-              <Button className="button-home-page" component={Link} to="/report">
-                <BarChartIcon />
-                Check a report
-              </Button>
-            </Paper>
+          
+          <Grid item xs={12} className={classes.homeOptionsGridContainer}>
+            <Grid item xs={12} sm={6} className={classes.homeOptionGrid}>
+              <Paper className={classes.paperContainer}>
+                <Button className="button-home-page" component={Link} to="/process">
+                  <TimelineIcon />
+                  Process your data
+                </Button>
+              </Paper>
+            </Grid>
+            <Grid item xs={12} sm={6} className={classes.homeOptionGrid}>
+              <Paper className={classes.paperContainer}>
+                <Button className="button-home-page" component={Link} to="/report">
+                  <BarChartIcon />
+                  Check a report
+                </Button>
+              </Paper>
+            </Grid>
           </Grid>
         </Grid>
     );

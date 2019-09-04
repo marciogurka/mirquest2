@@ -47,7 +47,7 @@ export const styles = theme => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
     marginLeft: -drawerWidth,
-    height: '100vh',
+    height: '100%',
     overflow: 'auto',
     marginTop: 64
   },

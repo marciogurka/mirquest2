@@ -19,6 +19,7 @@ import { styles } from './App.style';
 import AppStepper from './AppStepper/AppStepper';
 import StartPage from './StartPage/StartPage';
 import ReportPage from './ReportPage/ReportPage';
+import AppFooter from './AppFooter/AppFooter';
 
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
@@ -107,6 +108,7 @@ class App extends React.Component {
             <Route path="/process/" component={AppStepper} />
             <Route path="/report/" component={ReportPage} />
           </main>
+          <AppFooter></AppFooter>  
         </div>
         </Router>
       </React.Fragment>
