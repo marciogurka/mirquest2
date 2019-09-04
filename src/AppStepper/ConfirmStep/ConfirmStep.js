@@ -13,7 +13,8 @@ import TimelineIcon from '@material-ui/icons/Timeline';
 
 import './ConfirmStep.css';
 import { confirmStepStyles } from './ConfirmStep.style';
-import { SuccessDialog } from '../../SuccessDialog/SuccessDialog';
+import SuccessDialog from '../../SuccessDialog/SuccessDialog';
+import { resetSelectedTools } from '../ToolChooseStep/ToolChooseData';
 
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import axios from 'axios';
@@ -32,6 +33,7 @@ class ConfirmStep extends Component {
   }
 
   closeSuccessDialog = () => {
+    resetSelectedTools();
     this.setState({
       openSuccessDialog: false
     })

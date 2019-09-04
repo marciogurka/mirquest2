@@ -88,3 +88,7 @@ export let predictionTools = [
 export const getSelectedTools = (tools) => {
   return tools.filter(tool => tool.selected === true);
 }
+
+export const resetSelectedTools = () => {
+  return predictionTools.map(tool => tool.selected = false);
+}
