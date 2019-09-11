@@ -15,4 +15,7 @@ export const requestInfoDialogStyles = theme => ({
     leftIcon: {
         marginRight: theme.spacing.unit,
     },
+    link: {
+        margin: theme.spacing.unit,
+    },
 });

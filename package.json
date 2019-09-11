@@ -26,6 +26,7 @@
     "deploy": "npm run build&&gh-pages -d build"
   },
   "devDependencies": {
-    "gh-pages": "^2.0.1"
+    "gh-pages": "^2.0.1",
+    "jshint": "^2.10.2"
   }
 }

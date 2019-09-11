@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import Typography from '@material-ui/core/Typography';
+import Link from '@material-ui/core/Link';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -21,7 +22,6 @@ import { requestInfoDialogStyles } from './RequestInfoDialog.style';
 import CloseIcon from '@material-ui/icons/Close';
 import SaveIcon from '@material-ui/icons/Save';
 
-import axios from 'axios';
 import { toast } from 'react-toastify';
 import moment from 'moment'
 
@@ -29,13 +29,15 @@ function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
 
+const initialState = {
+    result: "",
+    value: 0,
+};
+
 class RequestInfoDialog extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            result: "",
-            value: 0,
-        }
+        this.state = { ...initialState };
     }
 
     handleChange = (event, value) => {
@@ -72,6 +74,9 @@ class RequestInfoDialog extends Component {
                     });
                 })
         }
+        // pk = 2 -> mirinho
+        else if (requestRecord.tool.pk === 2) {
+        }
     }
 
     loadResultFile = (requestRecord) => {
@@ -80,29 +85,73 @@ class RequestInfoDialog extends Component {
             const mirinhoOutFileName = requestRecord.request.fileName.replace(".fa", "_out.fa");
             const mirinhoOutFileUrl = requestRecord.request.file.replace(requestRecord.request.fileName, mirinhoOutFileName);
             fetch(mirinhoOutFileUrl)
-                .then(res => res.blob()) // Gets the response and returns it as a blob
-                .then(blob => {
-                    let fileReader;
-                    const handleFileRead = (e) => {
-                        const content = fileReader.result;
-                        console.log(content);
-                        this.setState({
-                            result: content
-                        });
-                    };
-
-                    const handleFileChosen = (file) => {
-                        fileReader = new FileReader();
-                        fileReader.onloadend = handleFileRead;
-                        fileReader.readAsText(file);
-                    };
-
-                    handleFileChosen(blob);
-                })
                 .catch(error => {
                     toast.error("Ops! Something went wrong while trying to retrieve result file", {
                         position: toast.POSITION.BOTTOM_RIGHT
                     });
+                    this.setState({
+                      result: "Ops! Something went wrong while trying to retrieve result file"
+                    });
+                })
+                .then(res => res.blob()) // Gets the response and returns it as a blob
+                .then(blob => {
+                    if(blob.size > 0 ) {
+                        let fileReader;
+                        const handleFileRead = e => {
+                            const content = fileReader.result;
+                            this.setState({
+                                result: content
+                            });
+                        };
+
+                        const handleFileChosen = file => {
+                            fileReader = new FileReader();
+                            fileReader.onloadend = handleFileRead;
+                            fileReader.readAsText(file);
+                        };
+
+                        handleFileChosen(blob);
+                    } else {
+                        this.setState({
+                            result: "Empty result file"
+                        });
+                    }
+                })
+        } // pk = 2 -> mirinho
+        else if (requestRecord.tool.pk === 2) {
+            const mirboostOutFileUrl = requestRecord.request.file.replace(requestRecord.request.fileName, `result_mirboost_${requestRecord.requestCode}.txt`);
+            fetch(mirboostOutFileUrl)
+                .catch(error => {
+                    toast.error("Ops! Something went wrong while trying to retrieve result file", {
+                        position: toast.POSITION.BOTTOM_RIGHT
+                    });
+                    this.setState({
+                      result: "Ops! Something went wrong while trying to retrieve result file"
+                    });
+                })
+                .then(res => res.blob()) // Gets the response and returns it as a blob
+                .then(blob => {
+                    if(blob.size > 0 ) {
+                        let fileReader;
+                        const handleFileRead = e => {
+                            const content = fileReader.result;
+                            this.setState({
+                                result: content
+                            });
+                        };
+
+                        const handleFileChosen = file => {
+                            fileReader = new FileReader();
+                            fileReader.onloadend = handleFileRead;
+                            fileReader.readAsText(file);
+                        };
+
+                        handleFileChosen(blob);
+                    } else {
+                        this.setState({
+                            result: "Empty result file"
+                        });
+                    }
                 })
         }
     }
@@ -113,17 +162,20 @@ class RequestInfoDialog extends Component {
         if (requestRecord && requestRecord.pk && !result) {
             this.loadResultFile(requestRecord);
         }
+        const close = () => {
+            closeCallback();
+            this.setState(initialState);
+        };
         return (
         <div>
             <Dialog
                 open={openRequestInfoDialog}
                 TransitionComponent={Transition}
                 fullScreen
-                onClose={closeCallback}
             >
             <AppBar className={classes.appBar}>
                 <Toolbar>
-                <IconButton color="inherit" onClick={closeCallback} aria-label="Close">
+                <IconButton color="inherit" onClick={close} aria-label="Close">
                     <CloseIcon />
                 </IconButton>
                 <Typography variant="h6" color="inherit" className={classes.flex}>
@@ -255,7 +307,24 @@ class RequestInfoDialog extends Component {
                                     fullWidth
                                 />
                             </Grid>
-                            
+                            <Grid item xs={12}>
+                                {
+                                    requestRecord && requestRecord.tool && requestRecord.tool.pk === 1 && 
+                                    <Typography>
+                                        <Link href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4448272/" variant="body1" className={classes.link} target="_blank">
+                                            {'Get more info about the Mirinho tool and how the results are organized'}
+                                        </Link>
+                                    </Typography>
+                                }
+                                {
+                                    requestRecord && requestRecord.tool && requestRecord.tool.pk === 2 && 
+                                    <Typography>
+                                        <Link href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4408786/" variant="body1" className={classes.link} target="_blank">
+                                            {'Get more info about the miRBoost tool and how the results are organized'}
+                                        </Link>
+                                    </Typography>
+                                }
+                            </Grid>
                             
                             
                         </Grid>
@@ -296,7 +365,7 @@ class RequestInfoDialog extends Component {
                     <SaveIcon className={classes.leftIcon} />
                     Download Result File
                 </Button>
-                <Button onClick={closeCallback} color="primary">
+                <Button onClick={close} color="primary">
                 Close
                 </Button>
             </DialogActions>
