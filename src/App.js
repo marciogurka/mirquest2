@@ -21,10 +21,9 @@ import StartPage from './StartPage/StartPage';
 import ReportPage from './ReportPage/ReportPage';
 import AppFooter from './AppFooter/AppFooter';
 
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 class App extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -41,9 +40,9 @@ class App extends React.Component {
     this.setState({ open: false });
   };
 
-  updateFiles = (files) => {
-    this.setState({files});
-  }
+  updateFiles = files => {
+    this.setState({ files });
+  };
 
   render() {
     const { classes, theme } = this.props;
@@ -51,65 +50,68 @@ class App extends React.Component {
 
     return (
       <React.Fragment>
-      <Router>  
-        <CssBaseline />
-        <div className={classes.root}>
-          <AppBar
-            position="absolute"
-            className={classNames(classes.appBar, open && classes.appBarShift)}
-          >
-            <Toolbar disableGutters={!open} className={classes.toolbar}>
-              <IconButton
-                color="inherit"
-                aria-label="Open drawer"
-                onClick={this.handleDrawerOpen}
-                className={classNames(
-                  classes.menuButton,
-                  open && classes.menuButtonHidden,
-                )}
-              >
-                <MenuIcon />
-              </IconButton>
-              <Typography
-                component="h1"
-                variant="title"
-                color="inherit"
-                noWrap
-                className={classes.title}
-              >
-                miRQuest 2
-              </Typography>
-            </Toolbar>
-          </AppBar>
-          <Drawer
-          className={classes.drawer}
-          variant="persistent"
-          anchor="left"
-          open={open}
-          classes={{
-            paper: classes.drawerPaper,
-          }}
-        >
-          <div className={classes.drawerHeader}>
-            <Avatar alt="miRQuest 2" src="/logo.png" className={classes.bigAvatar} />
-            <IconButton onClick={this.handleDrawerClose}>
-              {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-            </IconButton>
+        <Router>
+          <CssBaseline />
+          <div className={classes.root}>
+            <AppBar
+              position='absolute'
+              className={classNames(
+                classes.appBar,
+                open && classes.appBarShift
+              )}>
+              <Toolbar disableGutters={!open} className={classes.toolbar}>
+                <IconButton
+                  color='inherit'
+                  aria-label='Open drawer'
+                  onClick={this.handleDrawerOpen}
+                  className={classNames(
+                    classes.menuButton,
+                    open && classes.menuButtonHidden
+                  )}>
+                  <MenuIcon />
+                </IconButton>
+                <Typography
+                  component='h1'
+                  variant='title'
+                  color='inherit'
+                  noWrap
+                  className={classes.title}>
+                  miRQuest 2
+                </Typography>
+              </Toolbar>
+            </AppBar>
+            <Drawer
+              className={classes.drawer}
+              variant='persistent'
+              anchor='left'
+              open={open}
+              classes={{
+                paper: classes.drawerPaper
+              }}>
+              <div className={classes.drawerHeader}>
+                <Avatar
+                  alt='miRQuest 2'
+                  src='/logo.png'
+                  className={classes.bigAvatar}
+                />
+                <IconButton onClick={this.handleDrawerClose}>
+                  {theme.direction === 'ltr' ? (
+                    <ChevronLeftIcon />
+                  ) : (
+                    <ChevronRightIcon />
+                  )}
+                </IconButton>
+              </div>
+              <List>{mainListItems}</List>
+            </Drawer>
+            <main className={classes.content}>
+              <div className={classes.appBarSpacer} />
+              <Route path='/' exact component={StartPage} />
+              <Route path='/process/' component={AppStepper} />
+              <Route path='/report/' component={ReportPage} />
+            </main>
+            <AppFooter></AppFooter>
           </div>
-          <List>
-            {
-              mainListItems
-            }
-          </List>
-        </Drawer>
-          <main className={classes.content}>
-            <div className={classes.appBarSpacer} />
-            <Route path="/" exact component={StartPage} />
-            <Route path="/process/" component={AppStepper} />
-            <Route path="/report/" component={ReportPage} />
-          </main>
-          <AppFooter></AppFooter>  
-        </div>
         </Router>
       </React.Fragment>
     );
@@ -117,7 +119,7 @@ class App extends React.Component {
 }
 
 App.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles, { withTheme: true })(App);
