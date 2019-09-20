@@ -23,7 +23,7 @@ import { css } from '@emotion/core';
 import RingLoader from 'react-spinners/RingLoader';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import axios from 'axios';
+import client from '../client';
 
 const override = css `
     display: block;
@@ -53,7 +53,7 @@ class ReportPage extends Component {
         const params = {
           q: search
         };
-        axios.get(`http://localhost:8000/api/request_records/request_info/`, {
+        client.get(`/api/request_records/request_info/`, {
           params
         })
           .then(response => {

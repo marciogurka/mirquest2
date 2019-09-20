@@ -17,7 +17,7 @@ import SuccessDialog from '../../SuccessDialog/SuccessDialog';
 import { resetSelectedTools } from '../ToolChooseStep/ToolChooseData';
 
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import axios from 'axios';
+import client from '../../client';
 import { toast } from 'react-toastify';
 
 class ConfirmStep extends Component {
@@ -75,11 +75,11 @@ class ConfirmStep extends Component {
     }
 
     if (validRequest) {
-      axios.post(`http://localhost:8000/api/request_records/`, createData)
+      client.post(`/api/request_records/`, createData)
         .then(response => {
           const form = new FormData();
           form.append('file', files[0]);
-          axios.patch(`http://localhost:8000/api/request_records/${response.data.pk}/`, form)
+          client.patch(`/api/request_records/${response.data.pk}/`, form)
             .then(response => {
               this.setState({
                 loading: false,
