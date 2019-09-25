@@ -22,7 +22,8 @@ class UploadFileStep extends Component {
         <Typography variant="h5" gutterBottom align="center" className={classes.stepTitle}> Please choose your FASTA files to be analyzed </Typography>
         <div>
           <div className="dropzone">
-            <Dropzone onDrop={this.onDrop.bind(this)} className={classes.dropzone} accept=".fa" maxSize={10000000}>
+            <Dropzone onDrop={this.onDrop.bind(this)} className={classes.dropzone} accept={[".fa", ".txt"]} maxSize={10000000}>
+
               <span>Try dropping some FASTA files here, or click to select files to upload.</span>
             </Dropzone>
           </div>
