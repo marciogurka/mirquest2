@@ -16,13 +16,13 @@ export const mainListItems = (
         </ListItemIcon>
         <ListItemText primary="Home" />
     </ListItem>
-    <ListItem button component={Link} to="/process/">
+    <ListItem button component={Link} to="/process">
         <ListItemIcon>
           <TimelineIcon />
         </ListItemIcon>
         <ListItemText primary="Process File" />
     </ListItem>
-    <ListItem button component={Link} to="/report/">
+    <ListItem button component={Link} to="/report">
       <ListItemIcon>
         <BarChartIcon />
       </ListItemIcon>

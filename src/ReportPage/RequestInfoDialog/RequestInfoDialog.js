@@ -34,6 +34,8 @@ const initialState = {
     value: 0,
 };
 
+const fileRegex = new RegExp("(.txt)|(.fa)+");
+
 class RequestInfoDialog extends Component {
     constructor(props) {
         super(props);
@@ -51,8 +53,9 @@ class RequestInfoDialog extends Component {
             let filePath = requestRecord.request.file;
             let fileName = requestRecord.request.fileName;
             if (isResultFile) {
-                fileName = requestRecord.request.fileName.replace(".fa", "_out.fa");
+                fileName = requestRecord.request.fileName.replace(fileRegex, "_out.fa");
                 filePath = filePath.replace(requestRecord.request.fileName, fileName);
+                console.log(filePath)
             }
 
             fetch(filePath)
@@ -76,13 +79,34 @@ class RequestInfoDialog extends Component {
         }
         // pk = 2 -> mirinho
         else if (requestRecord.tool.pk === 2) {
+            // if result file, get the correct the path
+            const fileName = `result_mirboost_${requestRecord.requestCode}.txt`;
+            const mirboostOutFileUrl = requestRecord.request.file.replace(requestRecord.request.fileName, fileName);
+            fetch(mirboostOutFileUrl)
+                .then(res => res.blob()) // Gets the response and returns it as a blob
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    // the filename you want
+                    a.download = fileName;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                })
+                .catch(error => {
+                    toast.error("Ops! Something went wrong while trying to download result file", {
+                        position: toast.POSITION.BOTTOM_RIGHT
+                    });
+                })
         }
     }
 
     loadResultFile = (requestRecord) => {
         // pk = 1 -> mirinho
         if (requestRecord.tool.pk === 1) {
-            const mirinhoOutFileName = requestRecord.request.fileName.replace(".fa", "_out.fa");
+            const mirinhoOutFileName = requestRecord.request.fileName.replace(fileRegex, "_out.fa");
             const mirinhoOutFileUrl = requestRecord.request.file.replace(requestRecord.request.fileName, mirinhoOutFileName);
             fetch(mirinhoOutFileUrl)
                 .catch(error => {

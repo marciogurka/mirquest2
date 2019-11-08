@@ -21,7 +21,7 @@ import StartPage from './StartPage/StartPage';
 import ReportPage from './ReportPage/ReportPage';
 import AppFooter from './AppFooter/AppFooter';
 
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 class App extends React.Component {
   constructor(props) {
@@ -91,7 +91,7 @@ class App extends React.Component {
               <div className={classes.drawerHeader}>
                 <Avatar
                   alt='miRQuest 2'
-                  src='/logo.png'
+                  src='logo.png'
                   className={classes.bigAvatar}
                 />
                 <IconButton onClick={this.handleDrawerClose}>
@@ -106,9 +106,11 @@ class App extends React.Component {
             </Drawer>
             <main className={classes.content}>
               <div className={classes.appBarSpacer} />
-              <Route path='/' exact component={StartPage} />
-              <Route path='/process/' component={AppStepper} />
-              <Route path='/report/' component={ReportPage} />
+              <Switch>
+                <Route path='/process/' component={AppStepper} />
+                <Route path='/report/' component={ReportPage} />
+                <Route component={StartPage} />
+              </Switch>
             </main>
             <AppFooter></AppFooter>
           </div>
