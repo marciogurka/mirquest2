@@ -1,13 +1,16 @@
 import React from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import './AppFooter.css';
+import { appFooterStyle } from './AppFooter.style';
 
 export class AppFooter extends React.Component {
   render() {
+    const { classes } = this.props;
     return (
-      <footer>
-        <Typography variant="caption" gutterBottom align="center">
+      <footer className={ classes.footer }>
+        <Typography variant="caption" align="center">
           Made with
           <FavoriteIcon className="heart"/>
           by 
@@ -18,4 +21,4 @@ export class AppFooter extends React.Component {
   }
 }
 
-export default (AppFooter);
+export default withStyles(appFooterStyle)(AppFooter);

@@ -44,13 +44,13 @@ export const styles = theme => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing.unit * 3,
+    padding: 0,
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
     }),
     marginLeft: -drawerWidth,
-    height: '100%',
+    minHeight: 'calc(~"100vh - 40px")',
     overflow: 'auto',
     marginTop: 64,
     marginBottom: 40
