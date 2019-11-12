@@ -33,7 +33,8 @@ class App extends React.Component {
   }
 
   handleDrawerOpen = () => {
-    this.setState({ open: true });
+    const open = this.state.open;
+    this.setState({ open: !open });
   };
 
   handleDrawerClose = () => {
