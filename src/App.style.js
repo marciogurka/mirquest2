@@ -21,6 +21,9 @@ export const styles = theme => ({
       duration: theme.transitions.duration.enteringScreen
     })
   },
+  title: {
+    flexGrow: 1,
+  },
   menuButton: {
     marginLeft: 12,
     marginRight: 20

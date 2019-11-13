@@ -9,8 +9,10 @@ import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
 import Avatar from '@material-ui/core/Avatar';
 import MenuIcon from '@material-ui/icons/Menu';
+import InfoIcon from '@material-ui/icons/Info';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import { mainListItems } from './MenuList';
@@ -20,6 +22,8 @@ import AppStepper from './AppStepper/AppStepper';
 import StartPage from './StartPage/StartPage';
 import ReportPage from './ReportPage/ReportPage';
 import AppFooter from './AppFooter/AppFooter';
+import ContactDialog from './ContactDialog/ContactDialog';
+
 
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
@@ -28,6 +32,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       open: false,
+      openDialog: false,
       files: []
     };
   }
@@ -41,13 +46,21 @@ class App extends React.Component {
     this.setState({ open: false });
   };
 
+  handleDialogOpen = () => {
+    this.setState({ openDialog: true });
+  };
+
+  handleDialogClose = () => {
+    this.setState({ openDialog: false });
+  };
+
   updateFiles = files => {
     this.setState({ files });
   };
 
   render() {
     const { classes, theme } = this.props;
-    const { open } = this.state;
+    const { open, openDialog } = this.state;
 
     return (
       <React.Fragment>
@@ -61,16 +74,19 @@ class App extends React.Component {
                 open && classes.appBarShift
               )}>
               <Toolbar disableGutters={!open} className={classes.toolbar}>
-                <IconButton
-                  color='inherit'
-                  aria-label='Open drawer'
-                  onClick={this.handleDrawerOpen}
-                  className={classNames(
-                    classes.menuButton,
-                    open && classes.menuButtonHidden
-                  )}>
-                  <MenuIcon />
-                </IconButton>
+                <Tooltip title="Menu">
+                  <IconButton
+                    color='inherit'
+                    aria-label='Menu'
+                    onClick={this.handleDrawerOpen}
+                    className={classNames(
+                      classes.menuButton,
+                      open && classes.menuButtonHidden
+                    )}>
+                    <MenuIcon />
+                  </IconButton>
+                </Tooltip>
+                
                 <Typography
                   component='h1'
                   variant='title'
@@ -79,6 +95,16 @@ class App extends React.Component {
                   className={classes.title}>
                   miRQuest 2
                 </Typography>
+                <Tooltip title="More info">
+                  <IconButton
+                    aria-owns="menu-appbar"
+                    aria-haspopup="true"
+                    onClick={this.handleDialogOpen}
+                    color="inherit"
+                  >
+                    <InfoIcon />
+                  </IconButton>
+                </Tooltip>
               </Toolbar>
             </AppBar>
             <Drawer
@@ -113,6 +139,7 @@ class App extends React.Component {
                 <Route component={StartPage} />
               </Switch>
             </main>
+            <ContactDialog open={openDialog} onClose={this.handleDialogClose}/>
             <AppFooter></AppFooter>
           </div>
         </Router>
