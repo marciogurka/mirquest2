@@ -12,6 +12,7 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
+import Tooltip from '@material-ui/core/Tooltip';
 import TimelineIcon from '@material-ui/icons/Timeline';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import ShareIcon from '@material-ui/icons/Share';
@@ -28,7 +29,7 @@ class StartPage extends Component {
     return (
         <Paper className={classes.root} elevation={2}>
           <div className={classes.background}></div>
-          <Grid container xs={12}>
+          <Grid container>
             <Grid item xs={12}>
               <Typography variant="h2" align="center" gutterBottom className={classes.heroTitle}> Welcome to <b>miRQuest 2</b></Typography>
             </Grid>
@@ -80,16 +81,20 @@ class StartPage extends Component {
             
             <Grid item xs={12} className={classes.homeOptionsGridContainer}>
               <Grid item xs={12} sm={6} className={classes.homeOptionGrid}>
+                <Tooltip title="Start processing your biological sequence">
                   <Button variant="contained" color="primary" className="button-home-page" component={Link} to="/process">
-                    <TimelineIcon />
-                    Process your data
-                  </Button>
+                      <TimelineIcon />
+                      Process your data
+                    </Button>
+                </Tooltip>
               </Grid>
               <Grid item xs={12} sm={6} className={classes.homeOptionGrid}>
+                <Tooltip title="Check a created request status and results">
                   <Button variant="contained" color="primary" className="button-home-page" component={Link} to="/report">
                     <BarChartIcon />
                     Check a report
                   </Button>
+                </Tooltip>
               </Grid>
             </Grid>
           </Grid>
