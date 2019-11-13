@@ -8,6 +8,11 @@ export const appStepperStyle = theme => ({
     stepper: {
         background: 'transparent'
     },
+    helpIcon: {
+        position: 'absolute',
+        right: 10,
+        top: 5
+    },
     button: {
        marginRight: theme.spacing.unit,
     },
