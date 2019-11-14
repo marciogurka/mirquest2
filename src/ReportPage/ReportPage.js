@@ -118,7 +118,7 @@ class ReportPage extends Component {
       });
     };
     return (
-        <Grid container spacing={16} className={classes.root}>
+        <Grid container className={classes.root}>
           <RequestInfoDialog openRequestInfoDialog={openRequestInfoDialog} closeCallback={this.closeRequestInfoDialog} requestRecord={selectedRecord}></RequestInfoDialog>
           <Grid item xs={12} className={classes.bodyList}>
             <Typography variant="title" gutterBottom align="center"> Report search </Typography>
@@ -129,7 +129,7 @@ class ReportPage extends Component {
               id="outlined-full-width"
               label="Search"
               placeholder="Please put your code or e-mail in this box"
-              style={{ margin: 8 }}
+              style={{ marginBottom: 20, marginTop: 10 }}
               fullWidth
               variant="outlined"
               InputLabelProps={{

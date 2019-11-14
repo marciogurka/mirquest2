@@ -19,16 +19,16 @@ class UploadFileStep extends Component {
     const { classes } = this.props;
     return (
       <div className="start-page">
-        <Typography variant="h5" gutterBottom align="center" className={classes.stepTitle}> Please choose your FASTA files to be analyzed </Typography>
+        <Typography variant="h5" gutterBottom align="center" className={classes.stepTitle}> Please choose your sequence file to be processed </Typography>
         <div>
           <div className="dropzone">
             <Dropzone onDrop={this.onDrop.bind(this)} className={classes.dropzone} accept={[".fa", ".txt"]} maxSize={10000000}>
 
-              <span>Try dropping some FASTA files here, or click to select files to upload.</span>
+              <span>Try dropping a sequence file here, or click to select the sequence file to upload.</span>
             </Dropzone>
           </div>
           <aside>
-            <h2>Dropped files</h2>
+            <h2>Sequence file choosen</h2>
             {
               (this.props.files.length > 0) ?
                 (<List>
@@ -46,7 +46,7 @@ class UploadFileStep extends Component {
                   }
                  </List>)
               :
-               <span>No files were selected yet.</span>
+               <span>No file was selected yet.</span>
             }
             
           </aside>

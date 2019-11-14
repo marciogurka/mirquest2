@@ -2,6 +2,8 @@ export const reportPageStyles = theme => ({
     root: {
         flexGrow: 1,
         height: "100%",
+        maxWidth: "100%",
+        padding: theme.spacing.unit * 3,
     },
     paperContainer: {
         height: "100%",

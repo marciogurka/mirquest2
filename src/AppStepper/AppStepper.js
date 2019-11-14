@@ -6,10 +6,14 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from '@material-ui/core/IconButton';
+import HelpIcon from '@material-ui/icons/Help';
 
 import UploadFileStep from './UploadFileStep/UploadFileStep';
 import ToolChooseStep from './ToolChooseStep/ToolChooseStep';
 import ConfirmStep from './ConfirmStep/ConfirmStep';
+import HelpDialog from './HelpDialog/HelpDialog';
 import { appStepperStyle } from './AppStepper.style';
 import './AppStepper.css';
 
@@ -40,6 +44,7 @@ class AppStepper extends Component {
       selectedTools: [],
       skipped: new Set(),
       loading: false,
+      openDialog: false,
       loadingMessage: "Loading..."
     };
   }
@@ -121,6 +126,14 @@ class AppStepper extends Component {
     });
   };
 
+  handleDialogOpen = () => {
+    this.setState({ openDialog: true });
+  };
+
+  handleDialogClose = () => {
+    this.setState({ openDialog: false });
+  };
+
   isStepSkipped(step) {
     return this.state.skipped.has(step);
   }
@@ -148,10 +161,15 @@ class AppStepper extends Component {
   render() {
     const { classes } = this.props;
     const steps = getSteps();
-    const { activeStep } = this.state;
+    const { activeStep, openDialog } = this.state;
 
     return (
       <div className={classes.root}>
+        <Tooltip title="Help" placement="left">
+          <IconButton aria-label="Help" className={classes.helpIcon} onClick={this.handleDialogOpen}>
+            <HelpIcon fontSize="small" />
+          </IconButton>
+        </Tooltip>
         <div className = { `sweet-loading ${ !this.state.loading ? "hide" : ""}` } >
           < RingLoader
             css={override}
@@ -162,7 +180,8 @@ class AppStepper extends Component {
             gutterBottom
           />
           <Typography variant="h5" gutterBottom> {this.state.loadingMessage} </Typography>
-        </div> 
+        </div>
+        <HelpDialog open={openDialog} onClose={this.handleDialogClose}/>
         <Stepper activeStep={activeStep} className={classes.stepper}>
           {steps.map((label, index) => {
             const props = {};
