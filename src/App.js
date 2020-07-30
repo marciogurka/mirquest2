@@ -19,11 +19,11 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { mainListItems } from './MenuList';
 import { styles } from './App.style';
 
-import AppStepper from './AppStepper/AppStepper';
-import StartPage from './StartPage/StartPage';
-import ReportPage from './ReportPage/ReportPage';
-import AppFooter from './AppFooter/AppFooter';
-import ContactDialog from './ContactDialog/ContactDialog';
+import AppStepper from './components/AppStepper/AppStepper';
+import StartPage from './components/StartPage/StartPage';
+import ReportPage from './components/ReportPage/ReportPage';
+import AppFooter from './components/AppFooter/AppFooter';
+import ContactDialog from './components/ContactDialog/ContactDialog';
 
 const App = props => {
   const { classes, theme } = props;
