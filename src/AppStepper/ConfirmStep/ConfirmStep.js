@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
+import React, { useState, createRef } from 'react';
 import PropTypes from 'prop-types';
+import { v4 as uuidv4 } from 'uuid';
 
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
@@ -12,58 +13,49 @@ import Button from '@material-ui/core/Button';
 import TimelineIcon from '@material-ui/icons/Timeline';
 
 import './ConfirmStep.css';
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+import { toast } from 'react-toastify';
 import { confirmStepStyles } from './ConfirmStep.style';
 import SuccessDialog from '../../SuccessDialog/SuccessDialog';
 import { resetSelectedTools } from '../ToolChooseStep/ToolChooseData';
 
-import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import client from '../../client';
-import { toast } from 'react-toastify';
 
-class ConfirmStep extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      userEmail: "",
-      userName: "",
-      loading: false,
-      openSuccessDialog: false,
-      requestRecord: null
-    };
-  }
+const ConfirmStep = props => {
+  const { files, selectedTools, showLoading, hideLoading, classes } = props;
+  const form = createRef();
+  const [userEmail, setUserEmail] = useState('');
+  const [userName, setUserName] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [openSuccessDialog, setOpenSuccessDialog] = useState(false);
+  const [requestRecord, setRequestRecord] = useState(null);
 
-  closeSuccessDialog = () => {
+  const closeSuccessDialog = () => {
     resetSelectedTools();
-    this.setState({
-      openSuccessDialog: false
-    })
-  }
+    setOpenSuccessDialog(false);
+  };
 
-  handleFormNotValid = (errors) => {
-    toast.warning("Please fill the form with valid information!", {
+  const handleFormNotValid = errors => {
+    toast.warning('Please fill the form with valid information!', {
       position: toast.POSITION.BOTTOM_RIGHT
     });
-  }
+  };
 
-  handleSubmit = () => {
+  const handleSubmit = () => {
     let validRequest = true;
-    const { userName, userEmail } = this.state;
-    const { files, selectedTools, showLoading, hideLoading } = this.props;
-    this.setState({
-      loading: true
-    });
-    showLoading("Do not close this window, processing your request...");
+    setLoading(true);
+    showLoading('Do not close this window, processing your request...');
     const createData = {
       userName,
-      userEmail,
-    }
-    
+      userEmail
+    };
+
     if (selectedTools.length) {
-      const toolsData = []
-      selectedTools.forEach((tool, index) => {
-        toolsData.push(tool.id)
+      const toolsData = [];
+      selectedTools.forEach(tool => {
+        toolsData.push(tool.id);
       });
-      createData.tools = toolsData
+      createData.tools = toolsData;
     } else {
       validRequest = false;
     }
@@ -75,130 +67,125 @@ class ConfirmStep extends Component {
     }
 
     if (validRequest) {
-      client.post(`/api/request_records/`, createData)
+      client
+        .post(`/api/request_records/`, createData)
         .then(response => {
-          const form = new FormData();
-          form.append('file', files[0]);
-          client.patch(`/api/request_records/${response.data.pk}/`, form)
-            .then(response => {
-              this.setState({
-                loading: false,
-                requestRecord: response.data,
-                openSuccessDialog: true
-              });
+          const formData = new FormData();
+          formData.append('file', files[0]);
+          client
+            .patch(`/api/request_records/${response.data.pk}/`, formData)
+            .then(resp => {
+              setLoading(false);
+              setOpenSuccessDialog(true);
+              setRequestRecord(resp.data);
               hideLoading();
-              return response;
+              return resp;
             })
             .catch(error => {
-              this.setState({
-                loading: false
-              });
+              setLoading(false);
               hideLoading();
               console.error(error);
-              toast.error("Ops! Something went wrong, please try again later!", {
+              toast.error('Ops! Something went wrong, please try again later!', {
                 position: toast.POSITION.BOTTOM_RIGHT
               });
             });
         })
-        .catch((error) => {
-          this.setState({
-            loading: false
-          });
+        .catch(error => {
+          setLoading(false);
           hideLoading();
           console.error(error);
-          toast.error("Ops! Something went wrong, please try again later!", {
+          toast.error('Ops! Something went wrong, please try again later!', {
             position: toast.POSITION.BOTTOM_RIGHT
           });
         });
     } else {
-      console.error("Something is missing at your request, please try again");
-      toast.warn("Something is missing at your request, please try again", {
+      console.error('Something is missing at your request, please try again');
+      toast.warn('Something is missing at your request, please try again', {
         position: toast.POSITION.BOTTOM_RIGHT
       });
     }
-    
-  }
+  };
 
-  render() {
-    const { classes } = this.props;
-    const { userEmail, userName, loading, openSuccessDialog, requestRecord } = this.state;
-    const handleChange = name => event => {
-      this.setState({
-        [name]: event.target.value
-      });
-    };
-    return (
-      <div className="tool-choose-step">
-        <SuccessDialog openSuccessDialog={openSuccessDialog} closeCallback={this.closeSuccessDialog} requestRecord={requestRecord}></SuccessDialog>
-        <Typography variant="h5" gutterBottom align="center" className={classes.stepTitle}> Please confirm your request </Typography>
-        <Grid container spacing={16}>
-          <Grid item xs={12} sm={4} className={classes.fullHeight}>
-            <Paper className={`${classes.paper} ${classes.fullHeight}`}>
-              <Typography variant="subtitle2" gutterBottom className={classes.infoTitle}> You choose this tools </Typography>
-              <List className={classes.root} subheader={<li />}>
-                {this.props.selectedTools.map((tool, index) => (
-                  <ListItem key={`tool-${index}`} dense={true}>
-                    <ListItemText primary={`${tool.name}`} secondary={`Tool number: ${index + 1}`} />
-                  </ListItem>
-                ))}
-              </List>
-              <Typography variant="subtitle2" gutterBottom className={classes.infoTitle}> You choose this files to be analyzed </Typography>
-              <List className={classes.root} subheader={<li />}>
-                {this.props.files.map((file, index) => (
-                  <ListItem key={`file-${index}`} dense={true}>
+  return (
+    <div className="tool-choose-step">
+      <SuccessDialog openSuccessDialog={openSuccessDialog} closeCallback={closeSuccessDialog} requestRecord={requestRecord} />
+      <Typography variant="h5" gutterBottom align="center" className={classes.stepTitle}>
+        Please confirm your request
+      </Typography>
+      <Grid container spacing={16}>
+        <Grid item xs={12} sm={4} className={classes.fullHeight}>
+          <Paper className={`${classes.paper} ${classes.fullHeight}`}>
+            <Typography variant="subtitle2" gutterBottom className={classes.infoTitle}>
+              You choose this tools
+            </Typography>
+            <List className={classes.root} subheader={<li />}>
+              {selectedTools.map((tool, index) => (
+                <ListItem key={uuidv4()} dense>
+                  <ListItemText primary={`${tool.name}`} secondary={`Tool number: ${index + 1}`} />
+                </ListItem>
+              ))}
+            </List>
+            <Typography variant="subtitle2" gutterBottom className={classes.infoTitle}>
+              You choose this files to be analyzed
+            </Typography>
+            <List className={classes.root} subheader={<li />}>
+              {files.map(file => (
+                <ListItem key={uuidv4()} dense>
                   <ListItemText primary={`Name: ${file.name}`} secondary={`Size: ${file.size} bytes`} />
                 </ListItem>
-                ))}
-              </List>
-            </Paper>
-          </Grid>
-          <Grid item xs={12} sm={8}>
-            <Paper className={classes.paper}>
-              <Typography variant="subtitle1" gutterBottom className={classes.infoTitle}> Please provide your info to receive the notification when the processing is finished</Typography>
-              <ValidatorForm className={`${classes.container} ${classes.userForm}`} ref="form" onSubmit={this.handleSubmit} onError={errors => this.handleFormNotValid(errors)}>
-                <TextValidator
-                      label = "Name"
-                      onChange={handleChange('userName')}
-                      name="userName"
-                      className={classes.textField}
-                      value={userName}
-                      validators={['required']}
-                      errorMessages={['This field is required']}
-                      fullWidth={true}
-                  />
-                  <TextValidator
-                      label="Email"
-                      onChange={handleChange('userEmail')}
-                      className={classes.textField}
-                      name="userEmail"
-                      value={userEmail}
-                      validators={['required', 'isEmail']}
-                      errorMessages={['This field is required', 'Please insert a valid email']}
-                      fullWidth={true}
-                  />
-                  <Button variant="contained"
-                    color="primary"
-                    className = { classes.submitBtn }
-                    type="submit"
-                    fullWidth={true}
-                    disabled={loading}
-                  >
-                    Start Process the data
-                    <TimelineIcon className={classes.rightIcon} />
-                  </Button>
-                </ValidatorForm>
-            </Paper>
-          </Grid>
+              ))}
+            </List>
+          </Paper>
         </Grid>
-      </div>
-    );
-  }
-}
+        <Grid item xs={12} sm={8}>
+          <Paper className={classes.paper}>
+            <Typography variant="subtitle1" gutterBottom className={classes.infoTitle}>
+              Please provide your info to receive the notification when the processing is finished
+            </Typography>
+            <ValidatorForm
+              className={`${classes.container} ${classes.userForm}`}
+              ref={form}
+              onSubmit={handleSubmit}
+              onError={errors => handleFormNotValid(errors)}
+            >
+              <TextValidator
+                label="Name"
+                onChange={ev => setUserName(ev.target.value)}
+                name="userName"
+                className={classes.textField}
+                value={userName}
+                validators={['required']}
+                errorMessages={['This field is required']}
+                fullWidth
+              />
+              <TextValidator
+                label="Email"
+                onChange={ev => setUserEmail(ev.target.value)}
+                className={classes.textField}
+                name="userEmail"
+                value={userEmail}
+                validators={['required', 'isEmail']}
+                errorMessages={['This field is required', 'Please insert a valid email']}
+                fullWidth
+              />
+              <Button variant="contained" color="primary" className={classes.submitBtn} type="submit" fullWidth disabled={loading}>
+                Start Process the data
+                <TimelineIcon className={classes.rightIcon} />
+              </Button>
+            </ValidatorForm>
+          </Paper>
+        </Grid>
+      </Grid>
+    </div>
+  );
+};
 
 ConfirmStep.propTypes = {
   classes: PropTypes.object.isRequired,
   selectedTools: PropTypes.array.isRequired,
-  files: PropTypes.array.isRequired,
+  showLoading: PropTypes.func.isRequired,
+  hideLoading: PropTypes.func.isRequired,
+  files: PropTypes.array.isRequired
 };
 
 export default withStyles(confirmStepStyles)(ConfirmStep);

@@ -37,15 +37,15 @@ export const startPageStyles = theme => ({
     justifyContent: 'center'
   },
   homeOptionGrid: {
-    padding: 25,
+    padding: 25
   },
   homeOptionsGridContainer: {
     display: 'flex'
   },
   leftIcon: {
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing.unit
   },
   iconSmall: {
-    fontSize: 20,
-  },
+    fontSize: 20
+  }
 });

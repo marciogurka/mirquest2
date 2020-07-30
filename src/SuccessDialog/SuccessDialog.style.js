@@ -1,2 +1,1 @@
-export const successDialogStyles = theme => ({
-});
+export const successDialogStyles = theme => ({});

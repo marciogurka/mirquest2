@@ -1,4 +1,4 @@
-import React, { Component }  from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
@@ -9,6 +9,9 @@ import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import HelpIcon from '@material-ui/icons/Help';
+import { css } from '@emotion/core';
+import RingLoader from 'react-spinners/RingLoader';
+import { toast } from 'react-toastify';
 
 import UploadFileStep from './UploadFileStep/UploadFileStep';
 import ToolChooseStep from './ToolChooseStep/ToolChooseStep';
@@ -16,232 +19,176 @@ import ConfirmStep from './ConfirmStep/ConfirmStep';
 import HelpDialog from './HelpDialog/HelpDialog';
 import { appStepperStyle } from './AppStepper.style';
 import './AppStepper.css';
-
-import { css } from '@emotion/core';
-import RingLoader from 'react-spinners/RingLoader';
-import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const override = css`
-    display: block;
-    margin: 0 auto;
+  display: block;
+  margin: 0 auto;
 `;
 
 function getSteps() {
-  return ['Select FASTA files', 'Select Prediction\'s tools', 'Confirm the request'];
+  return ['Select FASTA files', "Select Prediction's tools", 'Confirm the request'];
 }
 
 toast.configure();
 
-class AppStepper extends Component {
+const AppStepper = props => {
+  const { classes } = props;
+  const [activeStep, setActiveStep] = useState(0);
+  const [files, setFiles] = useState([]);
+  const [selectedTools, setSelectedTools] = useState([]);
+  const [skipped, setSkipped] = useState(new Set());
+  const [loading, setLoading] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState('Loading...');
+  const steps = getSteps();
 
-  constructor(props) {
-    super(props);
+  const showLoading = messageText => {
+    setLoading(true);
+    setLoadingMessage(messageText || 'Loading...');
+  };
 
-    this.state = {
-      activeStep: 0,
-      files: [],
-      selectedTools: [],
-      skipped: new Set(),
-      loading: false,
-      openDialog: false,
-      loadingMessage: "Loading..."
-    };
-  }
+  const hideLoading = () => {
+    setLoading(false);
+  };
 
-  getStepContent = (step) => {
+  const getStepContent = step => {
     switch (step) {
       case 0:
-        return <UploadFileStep onChooseFiles={(files) => this.handleUpdateProperty('files', files)} files={this.state.files}/>;
+        return <UploadFileStep onChooseFiles={filesArray => setFiles(filesArray)} files={files} />;
       case 1:
-        return <ToolChooseStep onUpdateTools={(selectedTools) => this.handleUpdateProperty('selectedTools', selectedTools)}/>;
+        return <ToolChooseStep onUpdateTools={selectedToolsArray => setSelectedTools(selectedToolsArray)} />;
       case 2:
-        return <ConfirmStep selectedTools={this.state.selectedTools} files={this.state.files} showLoading={this.showLoading} hideLoading={this.hideLoading}/>;
+        return <ConfirmStep selectedTools={selectedTools} files={files} showLoading={showLoading} hideLoading={hideLoading} />;
       default:
         return 'Unknown step';
     }
-  }
+  };
 
-  handleUpdateProperty(propName, newValue) {
-    this.setState({[propName]: newValue})
-  }
-
-  isStepOptional = step => {
+  const isStepOptional = step => {
     return step === 1;
   };
 
-  handleNext = () => {
-    const { activeStep } = this.state;
-    let { skipped } = this.state;
-    if (this.isStepSkipped(activeStep)) {
-      skipped = new Set(skipped.values());
-      skipped.delete(activeStep);
+  const isStepSkipped = step => {
+    return skipped.has(step);
+  };
+
+  const handleNext = () => {
+    const updatedSkipped = new Set();
+    if (isStepSkipped(activeStep)) {
+      skipped.forEach(step => {
+        if (step !== activeStep) {
+          updatedSkipped.add(step);
+        }
+      });
     }
-    this.setState({
-      activeStep: activeStep + 1,
-      skipped,
-    });
+    setSkipped(updatedSkipped);
+    setActiveStep(activeStep + 1);
   };
 
-  handleBack = () => {
-    this.setState(state => ({
-      activeStep: state.activeStep - 1,
-    }));
+  const handleBack = () => {
+    setActiveStep(activeStep - 1);
   };
 
-  handleSkip = () => {
-    const { activeStep } = this.state;
-    if (!this.isStepOptional(activeStep)) {
+  const handleSkip = () => {
+    if (!isStepOptional(activeStep)) {
       // You probably want to guard against something like this,
       // it should never occur unless someone's actively trying to break something.
       throw new Error("You can't skip a step that isn't optional.");
     }
-
-    this.setState(state => {
-      const skipped = new Set(state.skipped.values());
-      skipped.add(activeStep);
-      return {
-        activeStep: state.activeStep + 1,
-        skipped,
-      };
-    });
+    const updatedSkipped = new Set(skipped.values());
+    updatedSkipped.add(activeStep);
+    setSkipped(updatedSkipped);
+    setActiveStep(activeStep + 1);
   };
 
-  showLoading = (messageText) => {
-    this.setState({
-      loading: true,
-      loadingMessage: messageText ? messageText : "Loading..."
-    });
-  }
-
-  hideLoading = () => {
-    this.setState({
-      loading: false
-    });
-  }
-
-  handleReset = () => {
-    this.setState({
-      activeStep: 0,
-    });
+  const handleReset = () => {
+    setActiveStep(0);
   };
 
-  handleDialogOpen = () => {
-    this.setState({ openDialog: true });
+  const handleDialogOpen = () => {
+    setOpenDialog(true);
   };
 
-  handleDialogClose = () => {
-    this.setState({ openDialog: false });
+  const handleDialogClose = () => {
+    setOpenDialog(false);
   };
 
-  isStepSkipped(step) {
-    return this.state.skipped.has(step);
-  }
-
-  checkNextButtonDisabled() {
-    const { activeStep } = this.state;
+  const checkNextButtonDisabled = () => {
     switch (activeStep) {
       case 0:
-        if(this.state.files.length > 0) {
-          return false;
-        } else {
-          return true;
-        }
+        return files.length > 0;
       case 1:
-        if(this.state.selectedTools.length > 0) {
-          return false;
-        } else {
-          return true;
-        }
+        return selectedTools.length > 0;
       default:
         return false;
     }
-  }
+  };
 
-  render() {
-    const { classes } = this.props;
-    const steps = getSteps();
-    const { activeStep, openDialog } = this.state;
-
-    return (
-      <div className={classes.root}>
-        <Tooltip title="Help" placement="left">
-          <IconButton aria-label="Help" className={classes.helpIcon} onClick={this.handleDialogOpen}>
-            <HelpIcon fontSize="small" />
-          </IconButton>
-        </Tooltip>
-        <div className = { `sweet-loading ${ !this.state.loading ? "hide" : ""}` } >
-          < RingLoader
-            css={override}
-            sizeUnit={"px"}
-            size={150}
-            color={'#123abc'}
-            loading={this.state.loading}
-            gutterBottom
-          />
-          <Typography variant="h5" gutterBottom> {this.state.loadingMessage} </Typography>
-        </div>
-        <HelpDialog open={openDialog} onClose={this.handleDialogClose}/>
-        <Stepper activeStep={activeStep} className={classes.stepper}>
-          {steps.map((label, index) => {
-            const props = {};
-            const labelProps = {};
-            if (this.isStepSkipped(index)) {
-              props.completed = false;
-            }
-            return (
-              <Step key={label} {...props}>
-                <StepLabel {...labelProps}>{label}</StepLabel>
-              </Step>
-            );
-          })}
-        </Stepper>
-        <div>
-          {activeStep === steps.length ? (
-            <div>
-              <Typography className={classes.instructions}>
-                All steps completed - you&quot;re finished
-              </Typography>
-              <Button onClick={this.handleReset} className={classes.button}>
-                Reset
+  return (
+    <div className={classes.root}>
+      <Tooltip title="Help" placement="left">
+        <IconButton aria-label="Help" className={classes.helpIcon} onClick={handleDialogOpen}>
+          <HelpIcon fontSize="small" />
+        </IconButton>
+      </Tooltip>
+      <div className={`sweet-loading ${!loading ? 'hide' : ''}`}>
+        <RingLoader css={override} sizeUnit="px" size={150} color="#123abc" loading={loading} gutterBottom />
+        <Typography variant="h5" gutterBottom>
+          {loadingMessage}
+        </Typography>
+      </div>
+      <HelpDialog open={openDialog} onClose={handleDialogClose} />
+      <Stepper activeStep={activeStep} className={classes.stepper}>
+        {steps.map((label, index) => {
+          const stepProps = {};
+          const labelProps = {};
+          if (isStepSkipped(index)) {
+            stepProps.completed = false;
+          }
+          return (
+            <Step key={label} {...stepProps}>
+              <StepLabel {...labelProps}>{label}</StepLabel>
+            </Step>
+          );
+        })}
+      </Stepper>
+      <div>
+        {activeStep === steps.length ? (
+          <div>
+            <Typography className={classes.instructions}>All steps completed - you&quot;re finished</Typography>
+            <Button onClick={handleReset} className={classes.button}>
+              Reset
+            </Button>
+          </div>
+        ) : (
+          <div>
+            <div className={classes.instructions}>{getStepContent(activeStep)}</div>
+            <div className={classes.btnContainer}>
+              <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
+                Back
               </Button>
-            </div>
-          ) : (
-            <div>
-              <div className={classes.instructions}>{this.getStepContent(activeStep)}</div>
-              <div className={classes.btnContainer}>
+              {activeStep !== steps.length - 1 ? (
                 <Button
-                  disabled={activeStep === 0}
-                  onClick={this.handleBack}
+                  variant="contained"
+                  color="primary"
+                  disabled={checkNextButtonDisabled()}
+                  onClick={ev => handleNext(ev)}
                   className={classes.button}
                 >
-                  Back
+                  Next
                 </Button>
-                {
-                  (activeStep !== steps.length - 1) ?
-                    (<Button variant="contained"
-                      color="primary"
-                      disabled={this.checkNextButtonDisabled()}
-                      onClick={this.handleNext}
-                      className={classes.button}
-                    >
-                      Next
-                    </Button>)
-                    :
-                    null
-                }
-                
-              </div>
+              ) : null}
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 AppStepper.propTypes = {
-  classes: PropTypes.object,
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(appStepperStyle)(AppStepper);

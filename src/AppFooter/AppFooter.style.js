@@ -1,5 +1,5 @@
 export const appFooterStyle = theme => ({
-    footer: {
-        height: 40
-    }
+  footer: {
+    height: 40
+  }
 });

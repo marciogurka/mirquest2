@@ -1,64 +1,66 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-
+import { v4 as uuidv4 } from 'uuid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import './ToolChooseStep.css';
 import { toolChooseStepStyles } from './ToolChooseStep.style';
 
-import { predictionTools, getSelectedTools } from './ToolChooseData';
+import { predictionTools as predToolsArray, getSelectedTools } from './ToolChooseData';
 
-
-class ToolChooseStep extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      predictionTools: predictionTools
-    }
-  }
-
-  changeSelectProp(tool) {
-    let newTool = this.state.predictionTools.find(predTool => predTool.id === tool.id);
-
+const ToolChooseStep = props => {
+  const { classes, onUpdateTools } = props;
+  const [predictionTools, setPredictionTools] = useState(predToolsArray);
+  const changeSelectProp = tool => {
     if (tool) {
-      newTool.selected = !newTool.selected;
-      this.setState({predictionTools});
-      this.props.onUpdateTools(getSelectedTools(this.state.predictionTools));
+      const updatedTools = predictionTools.map(predTool => {
+        const updatedTool = predTool;
+        if (updatedTool.id === tool.id) {
+          updatedTool.selected = !updatedTool.selected;
+        }
+        return updatedTool;
+      });
+      setPredictionTools(updatedTools);
+      onUpdateTools(getSelectedTools(predictionTools));
     }
-  }
+  };
 
-  render() {
-    const { classes } = this.props;
-    return (
-      <div className="tool-choose-step">
-        <Typography variant="h5" gutterBottom align="center" className={classes.stepTitle}> Please choose the tools to process your data</Typography>
-        <div className={classes.toolList}>
-          {
-            predictionTools.map((tool, index) => {
-              if (!tool.disabled) {
-                return <Button variant="contained"
-                  key={index}
-                  disabled={tool.disabled}
-                  color={this.state.predictionTools[index].selected ? 'primary' : null}
-                  onClick={() => this.changeSelectProp(tool)}
-                  className={ classes.toolOption }>
-                    { tool.name }
-                </Button>
-              } else 
-                return null;
-              
-            })
+  return (
+    <div className="tool-choose-step">
+      <Typography variant="h5" gutterBottom align="center" className={classes.stepTitle}>
+        Please choose the tools to process your data
+      </Typography>
+      <div className={classes.toolList}>
+        {predictionTools.map((tool, index) => {
+          if (!tool.disabled) {
+            return (
+              <Button
+                variant="contained"
+                key={uuidv4()}
+                disabled={tool.disabled}
+                color={predictionTools[index].selected ? 'primary' : null}
+                onClick={() => changeSelectProp(tool)}
+                className={classes.toolOption}
+              >
+                {tool.name}
+              </Button>
+            );
           }
-        </div>
+          return null;
+        })}
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 ToolChooseStep.propTypes = {
   classes: PropTypes.object.isRequired,
-  onUpdateTools: PropTypes.func,
+  onUpdateTools: PropTypes.func
+};
+
+ToolChooseStep.defaultProps = {
+  onUpdateTools: () => {}
 };
 
 export default withStyles(toolChooseStepStyles)(ToolChooseStep);

@@ -3,15 +3,15 @@ export const confirmStepStyles = theme => ({
     textAlign: 'center',
     paddingLeft: 10,
     paddingRight: 10,
-    paddingTop: 10,
+    paddingTop: 10
   },
   fullHeight: {
     height: '100%'
   },
   userForm: {
-    alignItems: "center",
-    display: "flex",
-    flexDirection: "column",
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column',
     padding: 15,
     width: '100%'
   },
@@ -21,15 +21,15 @@ export const confirmStepStyles = theme => ({
     maxWidth: 300
   },
   leftIcon: {
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing.unit
   },
   rightIcon: {
-    marginLeft: theme.spacing.unit,
+    marginLeft: theme.spacing.unit
   },
   textField: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing.unit
   },
   stepTitle: {
-    margin: "0 0 20px 0"
+    margin: '0 0 20px 0'
   }
 });

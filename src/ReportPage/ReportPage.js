@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-
+import { v4 as uuidv4 } from 'uuid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -15,200 +15,148 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import SearchIcon from '@material-ui/icons/Search';
 import BookmarkIcon from '@material-ui/icons/Bookmark';
 import './ReportPage.css';
-import { reportPageStyles } from './ReportPage.style';
-
-import RequestInfoDialog from './RequestInfoDialog/RequestInfoDialog';
 
 import { css } from '@emotion/core';
 import RingLoader from 'react-spinners/RingLoader';
 import { toast } from 'react-toastify';
+import RequestInfoDialog from './RequestInfoDialog/RequestInfoDialog';
+import { reportPageStyles } from './ReportPage.style';
 import 'react-toastify/dist/ReactToastify.css';
 import client from '../client';
 
-const override = css `
-    display: block;
-    margin: 0 auto;
+const override = css`
+  display: block;
+  margin: 0 auto;
 `;
 
-class ReportPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      search: "",
-      results: [],
-      searching: false,
-      openRequestInfoDialog: false,
-      selectedRecord: {}
-    }
-  }
+const ReportPage = props => {
+  const { classes } = props;
+  const [search, setSearch] = useState('');
+  const [results, setResults] = useState([]);
+  const [searching, setSearching] = useState(false);
+  const [openRequestInfoDialog, setOpenRequestInfoDialog] = useState(false);
+  const [selectedRecord, setSelectedRecord] = useState({});
 
-  handleSearch = (ev) => {
-    const { search, results } = this.state;
-    if(ev.key === "Enter" || ev.key === "enter" || !ev.key) {
+  const handleSearch = ev => {
+    if (ev.key === 'Enter' || ev.key === 'enter' || !ev.key) {
       if (search) {
-        this.setState({
-          results: [],
-          searching: true
-        });
+        setResults([]);
+        setSearching(true);
         const params = {
           q: search
         };
-        client.get(`/api/request_records/request_info/`, {
-          params
-        })
+        client
+          .get(`/api/request_records/request_info/`, {
+            params
+          })
           .then(response => {
-            this.setState({
-              searching: false,
-              results: response.data
-            });
+            setResults(response.data);
+            setSearching(false);
             return response;
           })
-          .catch((error) => {
-            this.setState({
-              searching: false
-            });
+          .catch(error => {
+            setSearching(false);
             console.error(error);
-            toast.error("Ops! Something went wrong, please try again later!", {
+            toast.error('Ops! Something went wrong, please try again later!', {
               position: toast.POSITION.BOTTOM_RIGHT
             });
           });
       } else {
-        toast.warn("Please insert some text in the search box", {
+        toast.warn('Please insert some text in the search box', {
           position: toast.POSITION.BOTTOM_RIGHT
         });
       }
     } else if (results.length) {
-      this.setState({
-        results: []
-      });
+      setResults([]);
     }
-  }
+  };
 
-  closeRequestInfoDialog = () => {
-    this.setState({
-      openRequestInfoDialog: false,
-      selectedRecord: null,
-    })
-  }
+  const closeRequestInfoDialog = () => {
+    setOpenRequestInfoDialog(false);
+    setSelectedRecord(null);
+  };
 
-  openRequestDetails = (index) => {
-    const { results } = this.state;
-    if (results[index] && results[index].status.toLowerCase().localeCompare("processed") === 0) {
-      this.setState({
-        openRequestInfoDialog: true,
-        selectedRecord: results[index],
-      })
-    } else if (results[index] && results[index].status.toLowerCase().localeCompare("processing") === 0) {
-      toast.info("This request is still processing!", {
+  const openRequestDetails = index => {
+    if (results[index] && results[index].status.toLowerCase().localeCompare('processed') === 0) {
+      setOpenRequestInfoDialog(true);
+      setSelectedRecord(results[index]);
+    } else if (results[index] && results[index].status.toLowerCase().localeCompare('processing') === 0) {
+      toast.info('This request is still processing!', {
         position: toast.POSITION.BOTTOM_RIGHT
       });
     } else {
-      toast.error("Ops! Something went wrong, please try again later!", {
+      toast.error('Ops! Something went wrong, please try again later!', {
         position: toast.POSITION.BOTTOM_RIGHT
       });
     }
-  }
+  };
 
-  render() {
-    const { classes } = this.props;
-    const { results, search, searching, selectedRecord, openRequestInfoDialog } = this.state;
-    const handleChange = name => event => {
-      this.setState({
-        [name]: event.target.value
-      });
-    };
-    return (
-        <Grid container className={classes.root}>
-          <RequestInfoDialog openRequestInfoDialog={openRequestInfoDialog} closeCallback={this.closeRequestInfoDialog} requestRecord={selectedRecord}></RequestInfoDialog>
-          <Grid item xs={12} className={classes.bodyList}>
-            <Typography variant="title" gutterBottom align="center"> Report search </Typography>
-            <TextField
-              onChange={handleChange('search')}
-              onKeyDown={this.handleSearch}
-              value={search}
-              id="outlined-full-width"
-              label="Search"
-              placeholder="Please put your code or e-mail in this box"
-              style={{ marginBottom: 20, marginTop: 10 }}
-              fullWidth
-              variant="outlined"
-              InputLabelProps={{
-                shrink: true
-              }}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="Do search"
-                      onClick={this.handleSearch}
-                    >
-                      <SearchIcon />
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-            {
-              (!searching && results.length > 0) ? 
-                (
-                  <List className={classes.list}>
-                    <ListSubheader>Results for search "{ search }": </ListSubheader>
-                    {
-                      results.map((item, index) => {
-                          return (<ListItem alignItems="flex-start" button key={index} onClick={ev => this.openRequestDetails(index)}>
-                            <ListItemIcon>
-                              <BookmarkIcon />
-                            </ListItemIcon>
-                            <ListItemText
-                              primary={item.requestCode}
-                              secondary={
-                                <React.Fragment>
-                                  <Typography component="span" className={classes.inline} color="textPrimary">
-                                    {item.status} - {item.tool.name}
-                                  </Typography>
-                                  {` - Requested by: ${item.userEmail}`}
-                                </React.Fragment>
-                              }
-                            />
-                          </ListItem>)
-                      })
-                    }
-                  </List>
-                )
-                : 
-                null
-            }
+  return (
+    <Grid container className={classes.root}>
+      <RequestInfoDialog openRequestInfoDialog={openRequestInfoDialog} closeCallback={closeRequestInfoDialog} requestRecord={selectedRecord} />
+      <Grid item xs={12} className={classes.bodyList}>
+        <Typography variant="title" gutterBottom align="center">
+          Report search
+        </Typography>
+        <TextField
+          onChange={ev => setSearch(ev.target.value)}
+          onKeyDown={handleSearch}
+          value={search}
+          id="outlined-full-width"
+          label="Search"
+          placeholder="Please put your code or e-mail in this box"
+          style={{ marginBottom: 20, marginTop: 10 }}
+          fullWidth
+          variant="outlined"
+          InputLabelProps={{
+            shrink: true
+          }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton aria-label="Do search" onClick={handleSearch}>
+                  <SearchIcon />
+                </IconButton>
+              </InputAdornment>
+            )
+          }}
+        />
+        {!searching && results.length > 0 ? (
+          <List className={classes.list}>
+            <ListSubheader>{`Results for search "${search}":`}</ListSubheader>
+            {results.map((item, index) => {
+              return (
+                <ListItem alignItems="flex-start" button key={uuidv4()} onClick={ev => openRequestDetails(index)}>
+                  <ListItemIcon>
+                    <BookmarkIcon />
+                  </ListItemIcon>
+                  <ListItemText primary={item.requestCode} />
+                </ListItem>
+              );
+            })}
+          </List>
+        ) : null}
 
-            {
-              (!searching && results.length === 0) ? 
-              <Typography variant="body1" gutterBottom align="center"> No results available </Typography>
-              :
-              null
-            }
-            {
-              (searching) ?
-                  <div className="sweet-loading" >
-                    < RingLoader
-                        css={override}
-                        sizeUnit={"px"}
-                        size={150}
-                        color={'#123abc'}
-                        loading={searching}
-                        gutterBottom
-                      />
-                      <Typography variant="h5" gutterBottom> Searching... </Typography>
-                  </div> 
-                : null
-            }
-            
-          </Grid>
-        </Grid>
-    );
-  }
-}
+        {!searching && results.length === 0 ? (
+          <Typography variant="body1" gutterBottom align="center">
+            No results available
+          </Typography>
+        ) : null}
+        {searching ? (
+          <div className="sweet-loading">
+            <RingLoader css={override} sizeUnit="px" size={150} color="#123abc" loading={searching} gutterBottom />
+            <Typography variant="h5" gutterBottom>
+              Searching...
+            </Typography>
+          </div>
+        ) : null}
+      </Grid>
+    </Grid>
+  );
+};
 
 ReportPage.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(reportPageStyles)(ReportPage);

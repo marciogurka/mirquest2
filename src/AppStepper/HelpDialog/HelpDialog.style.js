@@ -1,6 +1,6 @@
 export const helpDialogStyles = theme => ({
   root: {
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: theme.palette.background.paper
   },
   tabContainer: {
     backgroundColor: '#f5f5f582',

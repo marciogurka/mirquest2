@@ -22,7 +22,7 @@ export const styles = theme => ({
     })
   },
   title: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   menuButton: {
     marginLeft: 12,

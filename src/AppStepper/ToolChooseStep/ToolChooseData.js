@@ -1,94 +1,96 @@
-export let predictionTools = [
+export const predictionTools = [
   {
-    name: "miRAlign",
-    id: "miralign",
+    name: 'miRAlign',
+    id: 'miralign',
     selected: false,
     disabled: true
   },
   {
-    name: "Profile-Based Method",
-    id: "profile-based",
+    name: 'Profile-Based Method',
+    id: 'profile-based',
     selected: false,
     disabled: true
   },
   {
-    name: "miRiam",
-    id: "miriam",
+    name: 'miRiam',
+    id: 'miriam',
     selected: false,
     disabled: true
   },
   {
-    name: "PlantMiRNAPred",
-    id: "plantmirnapred",
+    name: 'PlantMiRNAPred',
+    id: 'plantmirnapred',
     selected: false,
     disabled: true
   },
   {
-    name: "MiRPara",
-    id: "mirpara",
+    name: 'MiRPara',
+    id: 'mirpara',
     selected: false,
     disabled: true
   },
   {
-    name: "MaturPred",
-    id: "maturpred",
+    name: 'MaturPred',
+    id: 'maturpred',
     selected: false,
     disabled: true
   },
   {
-    name: "FOMmiR",
-    id: "fommir",
+    name: 'FOMmiR',
+    id: 'fommir',
     selected: false,
     disabled: true
   },
   {
-    name: "MiRmat",
-    id: "mirmat",
+    name: 'MiRmat',
+    id: 'mirmat',
     selected: false,
     disabled: true
   },
   {
-    name: "miRNA_Targets",
-    id: "mirnatargets",
+    name: 'miRNA_Targets',
+    id: 'mirnatargets',
     selected: false,
     disabled: true
   },
   {
-    name: "Mirinho",
+    name: 'Mirinho',
     id: 1,
     selected: false,
     disabled: false
   },
   {
-    name: "MIRZA-G",
-    id: "mirzag",
+    name: 'MIRZA-G',
+    id: 'mirzag',
     selected: false,
     disabled: true
   },
   {
-    name: "miRBoost",
+    name: 'miRBoost',
     id: 2,
     selected: false,
     disabled: false
   },
   {
-    name: "miREval",
-    id: "mireval",
+    name: 'miREval',
+    id: 'mireval',
     selected: false,
     disabled: true
   },
   {
-    name: "miRNAFold",
-    id: "mirnafold",
+    name: 'miRNAFold',
+    id: 'mirnafold',
     selected: false,
     disabled: true
   }
 ];
 
-export const getSelectedTools = (tools) => {
+export const getSelectedTools = tools => {
   return tools.filter(tool => tool.selected === true);
-}
+};
 
 export const resetSelectedTools = () => {
-  return predictionTools.map(tool => tool.selected = false);
-}
+  return predictionTools.forEach(tool => {
+    tool.selected = false;
+  });
+};
