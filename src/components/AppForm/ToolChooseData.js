@@ -1,85 +1,85 @@
 export const predictionTools = [
   {
-    name: 'miRAlign',
-    id: 'miralign',
+    label: 'miRAlign',
+    value: 'miralign',
     selected: false,
     disabled: true
   },
   {
-    name: 'Profile-Based Method',
-    id: 'profile-based',
+    label: 'Profile-Based Method',
+    value: 'profile-based',
     selected: false,
     disabled: true
   },
   {
-    name: 'miRiam',
-    id: 'miriam',
+    label: 'miRiam',
+    value: 'miriam',
     selected: false,
     disabled: true
   },
   {
-    name: 'PlantMiRNAPred',
-    id: 'plantmirnapred',
+    label: 'PlantMiRNAPred',
+    value: 'plantmirnapred',
     selected: false,
     disabled: true
   },
   {
-    name: 'MiRPara',
-    id: 'mirpara',
+    label: 'MiRPara',
+    value: 'mirpara',
     selected: false,
     disabled: true
   },
   {
-    name: 'MaturPred',
-    id: 'maturpred',
+    label: 'MaturPred',
+    value: 'maturpred',
     selected: false,
     disabled: true
   },
   {
-    name: 'FOMmiR',
-    id: 'fommir',
+    label: 'FOMmiR',
+    value: 'fommir',
     selected: false,
     disabled: true
   },
   {
-    name: 'MiRmat',
-    id: 'mirmat',
+    label: 'MiRmat',
+    value: 'mirmat',
     selected: false,
     disabled: true
   },
   {
-    name: 'miRNA_Targets',
-    id: 'mirnatargets',
+    label: 'miRNA_Targets',
+    value: 'mirnatargets',
     selected: false,
     disabled: true
   },
   {
-    name: 'Mirinho',
-    id: 1,
+    label: 'Mirinho',
+    value: 1,
     selected: false,
     disabled: false
   },
   {
-    name: 'MIRZA-G',
-    id: 'mirzag',
+    label: 'MIRZA-G',
+    value: 'mirzag',
     selected: false,
     disabled: true
   },
   {
-    name: 'miRBoost',
-    id: 2,
+    label: 'miRBoost',
+    value: 2,
     selected: false,
     disabled: false
   },
   {
-    name: 'miREval',
-    id: 'mireval',
+    label: 'miREval',
+    value: 'mireval',
     selected: false,
     disabled: true
   },
   {
-    name: 'miRNAFold',
-    id: 'mirnafold',
+    label: 'miRNAFold',
+    value: 'mirnafold',
     selected: false,
     disabled: true
   }

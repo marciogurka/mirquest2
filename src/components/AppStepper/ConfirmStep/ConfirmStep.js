@@ -17,7 +17,6 @@ import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { toast } from 'react-toastify';
 import SuccessDialog from '~/components/SuccessDialog/SuccessDialog';
 import { confirmStepStyles } from './ConfirmStep.style';
-import { resetSelectedTools } from '../ToolChooseStep/ToolChooseData';
 
 import client from '~/client';
 
@@ -31,7 +30,6 @@ const ConfirmStep = props => {
   const [requestRecord, setRequestRecord] = useState(null);
 
   const closeSuccessDialog = () => {
-    resetSelectedTools();
     setOpenSuccessDialog(false);
   };
 

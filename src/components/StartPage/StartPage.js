@@ -30,12 +30,12 @@ const StartPage = props => {
       <div className={classes.background} />
       <Grid container>
         <Grid item xs={12}>
-          <Typography variant="h2" align="center" gutterBottom className={classes.heroTitle}>
-            {`Welcome to ${(<b>miRQuest 2</b>)}`}
+          <Typography variant="h4" align="center" gutterBottom className={classes.heroTitle}>
+            Welcome to miRQuest2
           </Typography>
         </Grid>
 
-        <Grid item xs={12} className={classes.homeOptionsGridContainer}>
+        <Grid item spacing={2} xs={12}>
           <Grid item xs={12} sm={6}>
             <Card className={classes.card}>
               <CardActionArea>

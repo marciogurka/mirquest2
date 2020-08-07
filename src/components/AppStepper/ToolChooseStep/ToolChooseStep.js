@@ -7,9 +7,9 @@ import { withStyles } from '@material-ui/core/styles';
 import './ToolChooseStep.css';
 import { toolChooseStepStyles } from './ToolChooseStep.style';
 
-import { predictionTools as predToolsArray, getSelectedTools } from './ToolChooseData';
-
 const ToolChooseStep = props => {
+  const getSelectedTools = tools => {};
+  const predToolsArray = [];
   const { classes, onUpdateTools } = props;
   const [predictionTools, setPredictionTools] = useState(predToolsArray);
   const changeSelectProp = tool => {

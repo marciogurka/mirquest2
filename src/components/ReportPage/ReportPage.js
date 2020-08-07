@@ -95,7 +95,7 @@ const ReportPage = props => {
     <Grid container className={classes.root}>
       <RequestInfoDialog openRequestInfoDialog={openRequestInfoDialog} closeCallback={closeRequestInfoDialog} requestRecord={selectedRecord} />
       <Grid item xs={12} className={classes.bodyList}>
-        <Typography variant="title" gutterBottom align="center">
+        <Typography variant="h6" gutterBottom align="center">
           Report search
         </Typography>
         <TextField
