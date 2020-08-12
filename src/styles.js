@@ -11,7 +11,7 @@ export const Container = styled.div`
 
 export const Main = styled.main`
   flex-grow: 1;
-  padding: 15px;
+  padding: 10px;
   transition: margin 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms, width 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;
   overflow: auto;
   margin-bottom: 40px;

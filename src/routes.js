@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import ProcessFile from './components/ProcessFile';
-import StartPage from './components/StartPage/StartPage';
+import StartPage from './components/StartPage';
 import ReportPage from './components/ReportPage/ReportPage';
 
 const Routes = () => {
