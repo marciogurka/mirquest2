@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Toolbar, Tooltip, IconButton } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import InfoIcon from '@material-ui/icons/Info';
-import TimelineIcon from '@material-ui/icons/Timeline';
+import QueueIcon from '@material-ui/icons/Queue';
 import HomeIcon from '@material-ui/icons/Home';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import { Link } from 'react-router-dom';
@@ -29,7 +29,7 @@ const AppHeader = props => {
         </Tooltip>
         <Tooltip title="Process File">
           <IconButton component={Link} color="inherit" to="/process">
-            <TimelineIcon />
+            <QueueIcon />
           </IconButton>
         </Tooltip>
         <Tooltip title="Reports">
