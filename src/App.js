@@ -5,7 +5,6 @@ import { BrowserRouter as Router } from 'react-router-dom';
 
 import AppFooter from './components/AppFooter';
 import AppHeader from './components/AppHeader';
-import AppForm from './components/AppForm';
 import AppDrawer from './components/AppDrawer';
 import ContactDialog from './components/ContactDialog';
 import Routes from './routes';

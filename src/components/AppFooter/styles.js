@@ -1,8 +1,10 @@
 import styled from 'styled-components';
 import FavoriteIcon from '@material-ui/icons/Favorite';
+import theme from '~/theme';
+
 
 export const Footer = styled.footer`
-  background-color: #3f51b5b5;
+  background-color: ${theme.palette.primary.light};
   bottom: 0;
   display: flex;
   height: 40px;
@@ -15,13 +17,14 @@ export const Footer = styled.footer`
 
 export const FooterText = styled.span`
   align-items: center;
-  color: #dedede;
+  color: ${theme.palette.primary.contrastText};
   display: flex;
   font-size: 12px;
 `;
 
 export const ProfileLink = styled.a`
-  color: #dedede;
+  color: ${theme.palette.primary.contrastText};
+  font-style: italic;
   padding-left: 5px;
   text-decoration: none;
 `;
