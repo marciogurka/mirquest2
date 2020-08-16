@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
-import AppForm from '../AppForm';
-import HowItWorks from '../HowItWorks';
+import AppForm from './AppForm';
+import HowItWorks from './HowItWorks';
 import { FullHeightGrid } from './styles';
 
 const ProcessFile = () => {

@@ -39,12 +39,10 @@ const AppForm = () => {
           return (
             <form onSubmit={handleSubmit}>
               <FormGroup>
+                <Box textAlign="center" mb={2}>
+                  <FormTitle variant="h5">miRQuest 2 Process File</FormTitle>
+                </Box>
                 <Grid container spacing={1}>
-                  <Grid item xs={12}>
-                    <Box textAlign="center">
-                      <FormTitle variant="h5">miRQuest 2 Process File</FormTitle>
-                    </Box>
-                  </Grid>
                   <Grid item xs={12}>
                     <FileInput label="Choose a FASTA or text file" name="file" onChange={handleChange} buttonLabel="Choose a file" />
                   </Grid>
@@ -90,8 +88,6 @@ const FormFooter = ({ handleReset, dirty, isSubmitting }) => {
       <Button type="submit" variant="contained" disabled={isSubmitting}>
         Submit
       </Button>
-
-      <pre>{JSON.stringify(dirty, null, 2)}</pre>
     </FooterContainer>
   );
 };
