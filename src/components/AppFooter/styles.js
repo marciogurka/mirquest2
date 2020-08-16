@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import theme from '~/theme';
 
-
 export const Footer = styled.footer`
   background-color: ${theme.palette.primary.light};
   bottom: 0;
