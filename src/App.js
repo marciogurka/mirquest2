@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { StylesProvider } from '@material-ui/core/styles';
 import { BrowserRouter as Router } from 'react-router-dom';
 
@@ -10,7 +9,7 @@ import ContactDialog from './components/ContactDialog';
 import Routes from './routes';
 import { Container, Main } from './styles';
 
-const App = props => {
+const App = () => {
   const [open, setOpen] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -46,7 +45,5 @@ const App = props => {
     </Router>
   );
 };
-
-App.propTypes = {};
 
 export default App;

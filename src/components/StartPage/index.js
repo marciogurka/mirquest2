@@ -1,20 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-
-import Typography from '@material-ui/core/Typography';
-
 import { Link } from 'react-router-dom';
-import { Paper, Button, Grid, Tooltip, Hidden } from '@material-ui/core';
+import { Paper, Button, Tooltip, Hidden } from '@material-ui/core';
 import TimelineIcon from '@material-ui/icons/Timeline';
 import BarChartIcon from '@material-ui/icons/BarChart';
 
 import { DNAGrid, BackgroundImage, CustomGrid, HeroTitle, DnaImg, ButtonGrid, TextGrid, Title, Text, HeroGrid, ContentGrid } from './styles';
 
-const StartPage = props => {
+const StartPage = () => {
   return (
     <>
       <BackgroundImage />
-      <CustomGrid container direction="column" component={Paper} xs={12} sm={10} alignContent="flex-start">
+      <CustomGrid container item direction="column" component={Paper} xs={12} sm={10} alignContent="flex-start">
         <HeroGrid item xs={12}>
           <HeroTitle component="h1" align="center">
             Welcome to miRQuest2
@@ -57,7 +53,5 @@ const StartPage = props => {
     </>
   );
 };
-
-StartPage.propTypes = {};
 
 export default StartPage;
