@@ -12,3 +12,9 @@ export const CustomAppBar = styled(AppBar)`
 export const Title = styled(Typography)`
   flex-grow: 1;
 `;
+
+export const HeaderLogo = styled.img`
+  margin-right: 15px;
+  margin-left: 5px;
+  width: 35px;
+`;
