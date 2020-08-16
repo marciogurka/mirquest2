@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Toolbar, Tooltip, IconButton, Box } from '@material-ui/core';
+import { Toolbar, Tooltip, IconButton, Box, Hidden } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import InfoIcon from '@material-ui/icons/Info';
 import QueueIcon from '@material-ui/icons/Queue';
@@ -25,21 +25,24 @@ const AppHeader = props => {
             miRQuest 2
           </Title>
         </Box>
-        <Tooltip title="Home">
-          <IconButton component={Link} color="inherit" to="/">
-            <HomeIcon />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Process File">
-          <IconButton component={Link} color="inherit" to="/process">
-            <QueueIcon />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Reports">
-          <IconButton component={Link} color="inherit" to="/report">
-            <BarChartIcon />
-          </IconButton>
-        </Tooltip>
+        <Hidden xsDown>
+          <Tooltip title="Home">
+            <IconButton component={Link} color="inherit" to="/">
+              <HomeIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Process File">
+            <IconButton component={Link} color="inherit" to="/process">
+              <QueueIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Reports">
+            <IconButton component={Link} color="inherit" to="/report">
+              <BarChartIcon />
+            </IconButton>
+          </Tooltip>
+        </Hidden>
+
         <Tooltip title="More info">
           <IconButton aria-owns="menu-appbar" aria-haspopup="true" onClick={handleDialogOpen} color="inherit">
             <InfoIcon />
