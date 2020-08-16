@@ -8,6 +8,7 @@ import InputErrorMessage from '../InputErrorMessage';
 const CheckboxInput = ({ ...inputProps }) => {
   const [field, meta, helpers] = useField(inputProps);
   const { error, touched } = meta;
+  const { label, name, options } = inputProps;
 
   const onCheck = o => {
     const arr = field.value || [];
@@ -19,28 +20,23 @@ const CheckboxInput = ({ ...inputProps }) => {
     } else {
       arr.splice(pos, 1);
     }
-    helpers.setTouched(inputProps.name);
+    helpers.setTouched(name);
     helpers.setValue(arr);
   };
 
   return (
     <FormControl>
-      {inputProps.label && (
+      {label && (
         <FormLabel component="legend" error={error && touched}>
-          {inputProps.label}
+          {label}
         </FormLabel>
       )}
-      {inputProps.options.map(o => {
+      {options.map(o => {
         return (
           <FormControlLabel
             key={uuidv4()}
             control={
-              <Checkbox
-                checked={field.value ? field.value.indexOf(o.value) > -1 : false}
-                onChange={() => onCheck(o)}
-                name={inputProps.name}
-                color="primary"
-              />
+              <Checkbox checked={field.value ? field.value.indexOf(o.value) > -1 : false} onChange={() => onCheck(o)} name={name} color="primary" />
             }
             label={o.label}
           />

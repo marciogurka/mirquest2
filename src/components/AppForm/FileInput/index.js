@@ -8,6 +8,7 @@ const FileInput = ({ ...inputProps }) => {
   const [field, meta, helpers] = useField(inputProps);
   const { error, touched } = meta;
   const [selectedFile, setSelectedFile] = useState({});
+  const { label, buttonLabel } = inputProps;
 
   const myHandleChange = e => {
     const file = e.target.files[0];
@@ -17,16 +18,20 @@ const FileInput = ({ ...inputProps }) => {
 
   return (
     <FormControl fullWidth>
-      <FormLabel component="legend">{inputProps.label}</FormLabel>
-      <Box mt={2} mb={1}>
+      <FormLabel component="legend" error={error && touched}>
+        {label}
+      </FormLabel>
+      <Box mt={1} display="flex">
         <Button variant="contained" color="primary" component="label">
-          {inputProps.buttonLabel}
-          <input name={field.name} onChange={myHandleChange} type="file" style={{ display: 'none' }} />
+          {buttonLabel}
+          <input name={field.name} onChange={myHandleChange} type="file" style={{ display: 'none' }} accept=".txt,.fa" />
         </Button>
+        {selectedFile && (
+          <Box ml={2} mt={1}>
+            <FormHelperText>{`File selected: ${field.value ? selectedFile.name : 'No file selected'}`}</FormHelperText>
+          </Box>
+        )}
       </Box>
-
-      {selectedFile && <FormHelperText>{`File selected: ${selectedFile.name || 'No file selected'}`}</FormHelperText>}
-
       <InputErrorMessage error={error} touched={touched} />
     </FormControl>
   );

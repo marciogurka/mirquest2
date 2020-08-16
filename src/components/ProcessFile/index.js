@@ -1,21 +1,20 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Grid } from '@material-ui/core';
 import AppForm from '../AppForm';
+import HowItWorks from '../HowItWorks';
+import { FullHeightGrid } from './styles';
 
-const ProcessFile = props => {
+const ProcessFile = () => {
   return (
-    <Grid container spacing={3}>
-      <Grid item xs={6}>
+    <Grid container>
+      <FullHeightGrid item xs={6}>
+        <HowItWorks />
+      </FullHeightGrid>
+      <FullHeightGrid item xs={6}>
         <AppForm />
-      </Grid>
-      <Grid item xs={6}>
-        <AppForm />
-      </Grid>
+      </FullHeightGrid>
     </Grid>
   );
 };
-
-ProcessFile.propTypes = {};
 
 export default ProcessFile;

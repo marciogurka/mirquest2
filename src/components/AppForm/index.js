@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { FormGroup, Grid, Button, Divider } from '@material-ui/core';
+import { Box, FormGroup, Grid, Button, Divider, FormHelperText } from '@material-ui/core';
 import TextInput from './TextInput';
 import FileInput from './FileInput';
 import CheckboxInput from './CheckboxInput';
 import { predictionTools } from './ToolChooseData';
-import { Container, FooterContainer } from './styles';
+import { Container, FooterContainer, FormTitle } from './styles';
 
 const AppForm = () => {
   const options = predictionTools.filter(tool => !tool.disabled);
@@ -20,7 +20,7 @@ const AppForm = () => {
       name: ''
     },
     validationSchema: Yup.object().shape({
-      file: Yup.mixed().required('You need to upload a file'),
+      file: Yup.mixed().required('You need to select a file'),
       selectedTools: Yup.array().required('You need to choose at least one tool'),
       email: Yup.string()
         .email('Please insert a valid e-mail')
@@ -41,7 +41,12 @@ const AppForm = () => {
               <FormGroup>
                 <Grid container spacing={1}>
                   <Grid item xs={12}>
-                    <FileInput label="Choose a FASTA or .txt file" name="file" onChange={handleChange} buttonLabel="Choose a file" />
+                    <Box textAlign="center">
+                      <FormTitle variant="h5">miRQuest 2 Process File</FormTitle>
+                    </Box>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FileInput label="Choose a FASTA or text file" name="file" onChange={handleChange} buttonLabel="Choose a file" />
                   </Grid>
                   <Grid item xs={12}>
                     <CheckboxInput
@@ -55,6 +60,7 @@ const AppForm = () => {
                     <Divider variant="middle" style={{ flex: 1 }} />
                   </Grid>
                   <Grid item xs={12}>
+                    <FormHelperText>Contact Info</FormHelperText>
                     <TextInput label="Your Name" name="name" value={values.name} onChange={handleChange} onBlur={handleBlur} />
                   </Grid>
                   <Grid item xs={12}>
@@ -84,8 +90,16 @@ const FormFooter = ({ handleReset, dirty, isSubmitting }) => {
       <Button type="submit" variant="contained" disabled={isSubmitting}>
         Submit
       </Button>
+
+      <pre>{JSON.stringify(dirty, null, 2)}</pre>
     </FooterContainer>
   );
+};
+
+FormFooter.propTypes = {
+  handleReset: PropTypes.func.isRequired,
+  dirty: PropTypes.bool.isRequired,
+  isSubmitting: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = store => {
