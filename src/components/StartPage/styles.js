@@ -24,7 +24,7 @@ export const BackgroundImage = styled.div`
 export const CustomGrid = styled(Grid)`
   height: 100%;
   margin: 0 auto;
-  padding: 10px 15px;
+  padding: 15px;
 `;
 
 export const HeroGrid = styled(Grid)`
@@ -43,27 +43,28 @@ export const TextGrid = styled(Grid)`
 `;
 
 export const HeroTitle = styled(Typography)`
-  font-size: 30px;
   font-weight: bold;
 `;
 
 export const Title = styled(Typography)`
-  font-size: 25px;
   font-weight: 500;
+  margin-bottom: 5px;
 `;
 
 export const Text = styled(Typography)`
-  font-size: 14px;
+  margin-bottom: 10px;
   text-align: justify;
 `;
 
 export const DnaImg = styled.img`
+  border-radius: 20px;
   width: 100%;
 `;
 
 export const DNAGrid = styled(Grid)`
+  align-items: center;
   display: flex;
-  padding: 10px;
+  padding: 15px;
 `;
 
 export const ButtonGrid = styled(Grid)`
