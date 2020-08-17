@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "e800dd9a25c2d2aafa02f2727049040e",
+    "revision": "e5713abd5b1351d3a0587d8ef446be26",
     "url": "/mirquest2/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/mirquest2/static/css/2.f42e59c9.chunk.css"
   },
   {
-    "revision": "03aa222c530bef7f46f3",
+    "revision": "acc31509c9a5f4b4bd1a",
     "url": "/mirquest2/static/css/main.305666cb.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/mirquest2/static/js/2.650350f6.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "03aa222c530bef7f46f3",
-    "url": "/mirquest2/static/js/main.31c99609.chunk.js"
+    "revision": "acc31509c9a5f4b4bd1a",
+    "url": "/mirquest2/static/js/main.bc91bb88.chunk.js"
   },
   {
     "revision": "b5902462d5f210cf51bf",

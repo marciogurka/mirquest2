@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/mirquest2/precache-manifest.4cbc89ef5a0472ddc2fd508735e34111.js"
+  "/mirquest2/precache-manifest.02d351f2f92d4abb01acd8ca08028ca2.js"
 );
 
 self.addEventListener('message', (event) => {
