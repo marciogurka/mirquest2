@@ -30,7 +30,7 @@ const App = () => {
   };
 
   return (
-    <Router>
+    <Router basename="/mirquest2">
       <StylesProvider injectFirst>
         <Container>
           <ContactDialog open={openDialog} onClose={handleDialogClose} />

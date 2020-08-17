@@ -10,7 +10,7 @@ const AppDrawer = props => {
   return (
     <CustomDrawer variant="persistent" anchor="left" open={open}>
       <DrawerHeader>
-        <MenuLogo alt="miRQuest 2" src="logo_black.png" />
+        <MenuLogo alt="miRQuest 2" src="./mirquest2/logo_black.png" />
         <IconButton onClick={handleDrawerClose}>
           <ChevronLeftIcon />
         </IconButton>

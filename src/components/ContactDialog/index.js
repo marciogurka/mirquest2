@@ -17,7 +17,7 @@ const ContactDialog = props => {
       university: 'PPGCC - UTFPR',
       cityInfo: 'Ponta Grossa - Paraná - Brazil',
       lattesLink: 'http://lattes.cnpq.br/8848670390208515',
-      photoSrc: './marcio_gurka.jpeg'
+      photoSrc: './mirquest2/marcio_gurka.jpeg'
     },
     {
       name: 'Simone Nasser M.',
@@ -26,7 +26,7 @@ const ContactDialog = props => {
       university: 'PPGCC - UTFPR',
       cityInfo: 'Ponta Grossa - Paraná - Brazil',
       lattesLink: 'http://lattes.cnpq.br/2608583610949216',
-      photoSrc: './simone_matos.jpg'
+      photoSrc: './mirquest2/simone_matos.jpg'
     },
     {
       name: 'Alexandre R. Paschoal',
@@ -35,7 +35,7 @@ const ContactDialog = props => {
       university: 'PPGBIOINFO - UTFPR',
       cityInfo: 'Londrina - Paraná - Brazil',
       lattesLink: 'http://lattes.cnpq.br/5834088144837137',
-      photoSrc: './alexandre_paschoal.jpeg'
+      photoSrc: './mirquest2/alexandre_paschoal.jpeg'
     }
   ];
 
