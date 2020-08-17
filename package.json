@@ -2,6 +2,7 @@
   "name": "mirquest2",
   "version": "0.1.0",
   "private": true,
+  "homepage": "/mirquest2",
   "dependencies": {
     "@emotion/core": "^10.0.16",
     "@material-ui/core": "^4.11.0",

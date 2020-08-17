@@ -20,7 +20,7 @@ const AppHeader = props => {
           </IconButton>
         </Tooltip>
         <Box display="flex" flex={1}>
-          <HeaderLogo alt="miRQuest 2" src="logo.png" />
+          <HeaderLogo alt="miRQuest 2" src="./mirquest2/logo.png" />
           <Title component="h1" variant="h6" color="inherit" noWrap>
             miRQuest 2
           </Title>

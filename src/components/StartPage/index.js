@@ -76,7 +76,7 @@ const StartPage = () => {
               </Tooltip>
             </ButtonGrid>
             <Hidden only={['xs', 'sm']}>
-              <DnaImg src="./dna.gif" alt="Chain gif" />
+              <DnaImg src="./mirquest2/dna.gif" alt="Chain gif" />
             </Hidden>
           </DNAGrid>
         </ContentGrid>
