@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Paper, Button, Tooltip, Hidden, Box, Typography } from '@material-ui/core';
+import { Paper, Button, Tooltip, Hidden, Box } from '@material-ui/core';
 import TimelineIcon from '@material-ui/icons/Timeline';
 import BarChartIcon from '@material-ui/icons/BarChart';
 
-import { DNAGrid, BackgroundImage, CustomGrid, HeroTitle, DnaImg, ButtonGrid, TextGrid, Title, Text, HeroGrid, ContentGrid } from './styles';
+import { DNAGrid, BackgroundImage, CustomGrid, HeroTitle, DnaImg, ButtonGrid, TextGrid, Title, Text, ContentGrid } from './styles';
 
 const StartPage = () => {
   return (
@@ -49,14 +49,16 @@ const StartPage = () => {
               option, where you can upload a microRNA sequence, then choose between the available predictors (at the moment we have
               <i> Mirinho </i>
               and
-              <i> miRBoost </i>
-              ), add your contact info and start the process of the chain.
+              <i> miRBoost)</i>, add your contact info and start the process of the chain.
             </Text>
             <Text variant="body1" component="p">
               After that you can check the
               <b> "Check a Report" </b>
               option, where you can search using your request code or email to check and download the results.
             </Text>
+          </TextGrid>
+
+          <DNAGrid item xs={12} md={6}>
             <ButtonGrid item xs={12}>
               <Tooltip title="Start processing your biological sequence" arrow>
                 <Box mt={1} mb={1}>
@@ -73,13 +75,10 @@ const StartPage = () => {
                 </Box>
               </Tooltip>
             </ButtonGrid>
-          </TextGrid>
-
-          <Hidden only={['xs', 'sm']}>
-            <DNAGrid item xs={12} md={6}>
+            <Hidden only={['xs', 'sm']}>
               <DnaImg src="./dna.gif" alt="Chain gif" />
-            </DNAGrid>
-          </Hidden>
+            </Hidden>
+          </DNAGrid>
         </ContentGrid>
       </CustomGrid>
     </>

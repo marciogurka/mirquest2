@@ -27,11 +27,6 @@ export const CustomGrid = styled(Grid)`
   padding: 15px;
 `;
 
-export const HeroGrid = styled(Grid)`
-  flex: 0;
-  margin-bottom: 10px;
-`;
-
 export const ContentGrid = styled(Grid)`
   flex: 1;
 `;
@@ -57,19 +52,22 @@ export const Text = styled(Typography)`
 `;
 
 export const DnaImg = styled.img`
-  border-radius: 20px;
+  border-radius: 50px;
+  padding: 15px 0;
   width: 100%;
 `;
 
 export const DNAGrid = styled(Grid)`
   align-items: center;
   display: flex;
+  flex-direction: column;
   padding: 15px;
 `;
 
 export const ButtonGrid = styled(Grid)`
   display: flex;
-  flex: 1;
+  flex: 0;
   flex-direction: column;
   justify-content: space-around;
+  width: 100%;
 `;
