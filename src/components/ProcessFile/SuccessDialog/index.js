@@ -1,19 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Slide from '@material-ui/core/Slide';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide } from '@material-ui/core';
 
-import './SuccessDialog.css';
 import { Link } from 'react-router-dom';
-import { successDialogStyles } from './SuccessDialog.style';
 
 function Transition(props) {
   return <Slide direction="up" {...props} />;
@@ -39,9 +30,11 @@ const SuccessDialog = props => {
           <DialogContentText id="alert-dialog-slide-description">
             We are processing it right now! You will receive an email as soon as it finishes. In the meantime, you can check the process status using
             the menu option and providing the following code:
-            <Typography className="code-span" component="span" variant="subtitle2" align="center" color="primary">
-              {requestRecord ? requestRecord.code : null}
-            </Typography>
+            <Box display="flex" justifyContent="center" mt={2}>
+              <Typography component="span" variant="subtitle2" color="primary">
+                {requestRecord ? requestRecord.code : null}
+              </Typography>
+            </Box>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -60,4 +53,4 @@ SuccessDialog.propTypes = {
   requestRecord: PropTypes.object.isRequired
 };
 
-export default withStyles(successDialogStyles)(SuccessDialog);
+export default SuccessDialog;
