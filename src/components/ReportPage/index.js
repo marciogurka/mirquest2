@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import { Box, Typography, TextField, InputAdornment, Grid, IconButton } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 
 import { toast } from 'react-toastify';
-import RequestInfoDialog from './RequestInfoDialog/RequestInfoDialog';
+import RequestInfoDialog from './RequestInfoDialog';
 import client from '~/client';
 import RequestList from './RequestList';
 import Loader from './Loader';
