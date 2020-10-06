@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { Box, FormGroup, Grid, Button, Divider, FormHelperText } from '@material-ui/core';
+import client from '~/client';
 import TextInput from './TextInput';
 import FileInput from './FileInput';
 import CheckboxInput from './CheckboxInput';
@@ -28,7 +29,32 @@ const AppForm = () => {
       name: Yup.string().required('Please insert your name')
     }),
     onSubmit: (values, { setSubmitting }) => {
-      console.log(values);
+      const formValues = {
+        userName: values.name,
+        userEmail: values.email,
+        tools: values.selectedTools
+      };
+      client
+        .post(`/api/request_records/`, formValues)
+        .then(response => {
+          const form = new FormData();
+          form.append('file', values.file);
+          client
+            .patch(`/api/request_records/${response.data.pk}/`, form)
+            .then(request => {
+              console.log(request);
+              setSubmitting(false);
+              return request;
+            })
+            .catch(error => {
+              console.error(error);
+              setSubmitting(false);
+            });
+        })
+        .catch(error => {
+          setSubmitting(false);
+          console.error(error);
+        });
     }
   };
   return (
@@ -37,7 +63,7 @@ const AppForm = () => {
         {formProps => {
           const { values, dirty, isSubmitting, handleChange, handleBlur, handleSubmit, handleReset } = formProps;
           return (
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} encType="multipart/form-data">
               <FormGroup>
                 <Box textAlign="center" mb={2}>
                   <FormTitle variant="h5">miRQuest 2 Process File</FormTitle>
